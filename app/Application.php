@@ -1,11 +1,12 @@
 <?php
 class Application{
-	protected $controller = 'indexController';
+	protected $controller = 'userController';
 	protected $action = 'home';
 	protected $parameters = [];
 
 	public function __construct(){
-		echo "<br />Application constructor<br />";
+		echo '<br />-----'.__METHOD__.'----<br />';
+
 		$this->readURI();
 		$this->prints();
 		$this->callController();
@@ -13,18 +14,16 @@ class Application{
 	}
 	
 	function readURI(){
-		$uri = trim($_SERVER["REQUEST_URI"], "/");
+		echo '<br />-----'.__METHOD__.'----<br />';
 		
+		$uri = trim($_SERVER["REQUEST_URI"], "/");
 		if (!empty($uri)){
 			$uri = explode('/', $uri);
 			
 			if (!empty($uri[0])){
-				
-				$cnt = $uri[0].'Controller';
-				$this->controller = $cnt;
-				echo 'test: cnt = '.$cnt;
+				$this->controller = $uri[0].'Controller';
 			} else{
-				$this->controller = 'indexController';
+				$this->controller = 'userController';
 			}
 			unset($uri[0]);
 			
@@ -42,8 +41,11 @@ class Application{
 	}
 	
 	function callController(){
+		echo '<br />-----'.__METHOD__.'----<br />';
+		
 		if (file_exists(CONTROLLERS.$this->controller.'.php')){
-			echo CONTROLLERS.$this->controller.'.php exits <br />';
+			echo $this->controller.'.php exits <br />';
+
 			include(CONTROLLERS.$this->controller.'.php');
 			$controller = new $this->controller;
 			
@@ -55,17 +57,19 @@ class Application{
 				echo "invalid Action<br />";
 			}
 		} else {
-			echo CONTROLLERS.$this->controller.'.php does not exits <br />';
+			echo $this->controller.'.php does not exits <br />';
 		}
 	}
 	
 	
 	function prints(){
-		echo '<br /> ------params------<br />';
+		echo '<br />-----'.__METHOD__.'----<br />';
+
 		echo 'Controller: '.$this->controller.'<br />';
 		echo 'Action: '.$this->action.'<br />';
 		echo 'Parameters: ';
-		print_r($this->parameters).'<br />';		
+		print_r($this->parameters);
+		echo '<br />';		
 	}
 }
 ?>

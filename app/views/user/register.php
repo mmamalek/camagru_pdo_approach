@@ -8,7 +8,7 @@
     <label for="password">Password</label>
         <input type="password" placeholder="password" name="passwd" id="password" required/><br />
     <label for="password2">Confirm Password</label>
-        <input type="password" placeholder="xxxx" name="password2" id="password2" required/><br />
+        <input type="password" placeholder="xxxx" name="passwd2" id="password2" required/><br />
     <input type="submit" name="submit" value="Register" />
      already a user? <a href="/user/login">log in</a>
 </form>

@@ -8,6 +8,8 @@ class Model{
 	}
 
 	protected function connect(){
+		echo '<br />-----'.__METHOD__.'----<br />';
+
 		require(CONFIG.'database.php');
 
 		try
@@ -25,9 +27,11 @@ class Model{
 	}
 
 	public function userExist($username){
+		echo '<br />-----'.__METHOD__.'----<br />';
+		
 		try{
 			$sql = "SELECT * FROM users WHERE username = ?";
-			$stmt = $conn->prepare($sql);
+			$stmt = $this->dbconnection->prepare($sql);
 			$stmt->execute([$username]);
 			$results = $stmt->fetch(PDO::FETCH_ASSOC);
 	
@@ -43,9 +47,11 @@ class Model{
 	}
 
 	public function emailExist($email){
+		echo '<br />-----'.__METHOD__.'----<br />';
+	
 		try{
 			$sql = "SELECT * FROM users WHERE email = ?";
-			$stmt = $conn->prepare($sql);
+			$stmt = $this->dbconnection->prepare($sql);
 			$stmt->execute([$email]);
 			$results = $stmt->fetch(PDO::FETCH_ASSOC);
 	
@@ -61,9 +67,11 @@ class Model{
 	}
 
 	public function username_email_Exist($username, $email){
+		echo '<br />-----'.__METHOD__.'----<br />';
+
 		try{
 			$sql = "SELECT * FROM users WHERE username = ? && email = ?";
-			$stmt = $conn->prepare($sql);
+			$stmt = $this->dbconnection->prepare($sql);
 			$stmt->execute([$username, $email]);
 			$results = $stmt->fetch(PDO::FETCH_ASSOC);
 	
@@ -77,8 +85,51 @@ class Model{
 			return FALSE;
 		} 
 	}
+	
+	
+	public function username_password($username, $password){
+		echo '<br />-----'.__METHOD__.'----<br />';
 
+		try{
+			$sql = "SELECT * FROM users WHERE username = ? && passwd = ?";
+			$stmt = $this->dbconnection->prepare($sql);
+			$stmt->execute([$username, $password]);
+			$results = $stmt->fetch(PDO::FETCH_ASSOC);
+	
+			if ($results)
+				return TRUE;
+			else
+				return FALSE;
+	
+		} catch (PDOException $e){
+			echo $e->getMessage();
+			return FALSE;
+		} 
+	}
+
+	public function email_password($email, $password){
+		echo '<br />-----'.__METHOD__.'----<br />';
+
+		try{
+			$sql = "SELECT * FROM users WHERE username = ? && passwd = ?";
+			$stmt = $this->dbconnection->prepare($sql);
+			$stmt->execute([$email, $password]);
+			$results = $stmt->fetch(PDO::FETCH_ASSOC);
+	
+			if ($results)
+				return TRUE;
+			else
+				return FALSE;
+	
+		} catch (PDOException $e){
+			echo $e->getMessage();
+			return FALSE;
+		} 
+	}
+	
 	public function addUser($username, $email, $password, $verification_code){
+		echo '<br />-----'.__METHOD__.'----<br />';
+		
 		try{
 			$sql = 'INSERT INTO users (username, passwd, email, notifications, verification_code) VALUES (?, ?, ?, 0, ?)';
 			$stmt = $this->dbconnection->prepare($sql);
@@ -98,8 +149,6 @@ class Model{
 			return FALSE;
 		}
 	}
-
-
 }
 ?>
 
