@@ -1,5 +1,5 @@
 <?php
-class indexController{
+class homeController{
 
 	public function __construct(){
 		echo "----- object of class ".__CLASS__." created <br/>";

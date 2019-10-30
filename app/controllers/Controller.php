@@ -6,6 +6,10 @@ class Controller{
     public function view($viewfile, $viewdata){
         $this->view = new View($viewfile, $viewdata);
         return $this->view;
-    }
+	}
+	public function model(){
+		$this->model = new Model();
+		return $this->model;
+	}
 }
 ?>

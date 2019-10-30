@@ -1,6 +1,8 @@
 <?php
 echo $_GET['ver_code'];
+$var = '<script>alert("Hey you");</script>';
 
+echo filter_var($var, FILTER_SANITIZE_STRIPPED);
 
 ?>
 
