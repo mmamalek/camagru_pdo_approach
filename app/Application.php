@@ -44,12 +44,13 @@ class Application{
 	function callController(){
 		if (file_exists(CONTROLLERS.$this->controller.'.php')){
 			echo CONTROLLERS.$this->controller.'.php exits <br />';
+			include(CONTROLLERS.$this->controller.'.php');
 			$controller = new $this->controller;
 			
 			if (method_exists($controller, $this->action)){
 				echo "Action available<br />";
 
-				call_user_func_array([]);
+				call_user_func_array([$controller, $this->action], $this->parameters);
 			} else {
 				echo "invalid Action<br />";
 			}
@@ -64,7 +65,7 @@ class Application{
 		echo 'Controller: '.$this->controller.'<br />';
 		echo 'Action: '.$this->action.'<br />';
 		echo 'Parameters: ';
-		print_r($this->parameters);		
+		print_r($this->parameters).'<br />';		
 	}
 }
 ?>
