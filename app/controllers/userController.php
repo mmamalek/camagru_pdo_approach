@@ -60,10 +60,11 @@ class userController extends Controller{
 		
     }
 	public function validate_inputs(){
-		$username = $_POST['username'];
+		$username = filter_var($_POST['username'], FILTER_SANITIZE_STRIPPED);
 		$email = $_POST['email'];
 		$password = $_POST['passwd'];
 		$password2 = $_POST['passwd2'];
+
 
 
 	}
