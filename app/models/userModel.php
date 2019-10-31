@@ -1,5 +1,5 @@
 <?php
-class Model{
+class userModel{
 	protected $dbconnection = NULL;
 
 	public function __construct(){
@@ -46,6 +46,7 @@ class Model{
 		} 
 	}
 
+	
 	public function emailExist($email){
 		echo '<br />-----'.__METHOD__.'----<br />';
 	
@@ -111,7 +112,7 @@ class Model{
 		echo '<br />-----'.__METHOD__.'----<br />';
 
 		try{
-			$sql = "SELECT * FROM users WHERE username = ? && passwd = ?";
+			$sql = "SELECT * FROM users WHERE email = ? && passwd = ?";
 			$stmt = $this->dbconnection->prepare($sql);
 			$stmt->execute([$email, $password]);
 			$results = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -136,7 +137,7 @@ class Model{
 			$stmt->execute([$username, $password, $email, $verification_code]);
 			echo 'seccessfull <br />';
 			
-			$msg= "click the link to verify your account: http://127.0.0.1:8080/redirect_here.php?ver_code=$verification_code";
+			$msg= "click the link to verify your account: http://127.0.0.1:8080/user/verify/$verification_code";
 			$headers = array(
 				'From: noreply');
 
@@ -148,6 +149,63 @@ class Model{
 			echo $e->getMessage();
 			return FALSE;
 		}
+	}
+
+	public function deleteUser($username){
+		echo '<br />-----'.__METHOD__.'----<br />';
+		
+		try{
+			
+			$sql = "DELETE FROM `users` WHERE `users`.`username` =  ?";
+			
+			$stmt = $this->dbconnection->prepare($sql);
+			$stmt->execute([$username]);
+			echo 'seccessfull <br />';
+			
+		} catch (PDOException $e){
+			echo $e->getMessage();
+			return FALSE;
+		}
+		
+	}
+	
+	public function verify($code){
+		echo '<br />-----'.__METHOD__.'----<br />';
+		
+		try{
+			$sql ="UPDATE `users` SET `verified` = '1' WHERE `verification_code` = ?";
+			$stmt = $this->dbconnection->prepare($sql);
+			$stmt->execute([$code]);
+
+			$sql ="UPDATE `users` SET `verification_code` = '' WHERE `verification_code` = ?";
+			$stmt = $this->dbconnection->prepare($sql);
+			$stmt->execute([$code]);
+			echo 'seccessfull <br />';
+			
+		} catch (PDOException $e){
+			echo $e->getMessage();
+			return FALSE;
+		}
+	}
+
+	public function isverified($username){
+		echo '<br />-----'.__METHOD__.'----<br />';
+	
+		try{
+			$sql = "SELECT * FROM users WHERE username = ?";
+			$stmt = $this->dbconnection->prepare($sql);
+			$stmt->execute([$username]);
+			$results = $stmt->fetch(PDO::FETCH_ASSOC);
+	
+			if ($results)
+				return TRUE;
+			else
+				return FALSE;
+	
+		} catch (PDOException $e){
+			echo $e->getMessage();
+			return FALSE;
+		} 
 	}
 }
 ?>

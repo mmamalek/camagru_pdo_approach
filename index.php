@@ -26,6 +26,11 @@ spl_autoload_register('spl_autoload', false);
 
 ?>
 <?php
+session_start();
+if(!isset($_SESSION['logged in user'])){
+	$_SESSION['logged in user'] = '';
+}
+var_dump($_SESSION);
 
 include(APP.'Application.php');
 $app = new Application();

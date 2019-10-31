@@ -8,7 +8,7 @@ class Controller{
         return $this->view;
 	}
 	public function model(){
-		$this->model = new Model();
+		$this->model = new userModel();
 		return $this->model;
 	}
 }

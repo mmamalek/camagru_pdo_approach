@@ -17,53 +17,125 @@ class userController extends Controller{
 
 		$this->model = $this->model();
     }
+	/***************************************\
+	|*  _______LOGIN________               *|
+	\***************************************/
 
     public function login(){
-		echo '<br />-----'.__METHOD__.'----<br />';
-	
-		if ($_POST['submit'] != 'Login'){
-			$this->view = new View('user/login');
-        } else {
-			$this->filter_inputs();
-			$this->authenticate();
-		//	header('Location: /user/login');
-        }
-		var_dump($_POST);
-		echo '<br />'.$this->password.'<br />';
-	}
-	
-	/*REGISTER*/
-    public function register(){
-		echo '<br />-----'.__METHOD__.'----<br />';
-		
-		
-        if ($_POST['submit'] != 'Register'){
-			$this->view = new View('user/register');
-        } else {
-			$this->filter_inputs();
-			$this->validate_inputs();
-			$this->authenticate();
-	//		header('Location: /user/register');
-        }
-        var_dump($_POST);
-		
+
+		if (empty($_SESSION['logged in user'])){
+
+			if ($_POST['submit'] != 'Login'){
+				$this->view = new View('user/login');
+			} else {
+				$this->filter_inputs();
+				$this->authenticate();
+				//	header('Location: /user/login');
+			}
+		}
+		else{
+			header('Location: /user/profile');
+		}
 	}
 	
 	
-	
-    public function profile(){
-		echo '<br />-----'.__METHOD__.'----<br />';
+	/***************************************\
+	 |*  _______LOGOUT________             *|
+	 \***************************************/
+	 
+	 
+	 public function logout(){
+		echo $_SESSION['logged in user'].' logging out';
+		 $_SESSION['logged in user'] = '';
+		 var_dump($_SESSION);
+		}
 		
-		$this->view = new View('user/profile');
 		
-    }
-    public function edit(){
+		/***************************************\
+		 |*  _______REGISTER________            *|
+		 \***************************************/
+		 public function register(){
+			 echo '<br />-----'.__METHOD__.'----<br />';
+			 
+			 if (empty($_SESSION['logged in user'])){
+				 if ($_POST['submit'] != 'Register'){
+					 $this->view = new View('user/register');
+					} else {
+						$this->filter_inputs();
+						$this->validate_inputs();
+						$this->authenticate();
+						$this->send_ver_email();
+						//		header('Location: /user/register');
+					}
+					var_dump($_POST);
+				} else{
+					header('Location: /user/profile');
+				}
+			}
+			
+			/***************************************\
+			 |*  _______PROFILE________             *|
+			 \***************************************/
+			 
+			 
+			 public function profile(){
+				 echo '<br />-----'.__METHOD__.'----<br />';
+				 
+				 $this->view = new View('user/profile');
+				 
+				}
+				
+				/***************************************\
+				 |*  _______EDIT________            *|
+				 \***************************************/
+	public function edit(){
 		$this->view = new View('user/edit');
 		
+	}
+
+ 	/*  _______delete________            */
+	
+
+	public function delete(){
+		
+		$this->model->deleteUser($_SESSION['logged in user']);
+		$_SESSION['logged in user'] = '';
+		header('Location: /user/login');
+	}
+	
+
+	/***************************************\
+	|*  _______AUTHENTICATE________            *|
+	\***************************************/
+    public function login_authentication(){
+		echo '<br />-----'.__METHOD__.'----<br />';
+		
+
+		if ($_POST['submit'] == 'Login'){
+			if ($this->model->username_password($this->login, $this->password)){
+				echo 'Loged in using username and password.<br />';
+				$_SESSION['logged in user'] = $this->login;
+				header('Location: /user/profile');
+				
+			} else if ($this->model->email_password($this->login, $this->password)){
+				echo 'Loged in using email and password.<br />';
+				$_SESSION['logged in user'] = $this->model->get_username($this->login);
+				header('Location: /user/profile');
+			} else {
+				$_POST['submit'] = '';
+				header('Location: /user/login');
+			}
+		} else {
+		}
+		var_dump($_SESSION);
+		
     }
+	/***************************************\
+	|*  _______AUTHENTICATE________            *|
+	\***************************************/
     public function authenticate(){
 		echo '<br />-----'.__METHOD__.'----<br />';
-
+		
 		if ($_POST['submit'] == 'Register'){
 			if ($this->model->emailExist($this->email)){
 				echo 'Email already registered.<br />';
@@ -81,18 +153,22 @@ class userController extends Controller{
 		if ($_POST['submit'] == 'Login'){
 			if ($this->model->username_password($this->login, $this->password)){
 				echo 'Loged in using username and password.<br />';
+				$_SESSION['logged in user'] = $this->login;
 				
 			} else if ($this->model->email_password($this->login, $this->password)){
 				echo 'Loged in using email and password.<br />';
+				$_SESSION['logged in user'] = $this->model->get_username($this->login);
 			} else {
 				echo "Login failed<br />";
 			}
-			} else if ($this->model->username_email_Exist($this->login, $this->email)){
-				echo 'Loged in using username and email.<br />';
-			} else {
+		} else {
 		}
+		var_dump($_SESSION);
 		
     }
+	/***************************************\
+	|*  _______VALIDATE INPUTS________            *|
+	\***************************************/
 	public function validate_inputs(){
 		echo '<br />-----'.__METHOD__.'----<br />';
 		
@@ -120,22 +196,46 @@ class userController extends Controller{
 		}
 	}
 	
+	/***************************************\
+	|*  _______FILTER________            *|
+	\***************************************/
 	public function filter_inputs(){
 		echo '<br />-----'.__METHOD__.'----<br />';
-
-
+		
+		
 		if ($_POST['submit'] == 'Login'){
 			$this->login = filter_var($_POST['username'], FILTER_SANITIZE_STRIPPED);
 			$this->password = hash('whirlpool', filter_var($_POST['passwd'], FILTER_SANITIZE_STRIPPED));
 			//unset($_POST['submit']);
 		}
 		if ($_POST['submit'] == 'Register'){
-		echo	$this->username = filter_var($_POST['username'], FILTER_SANITIZE_STRIPPED);
-		echo	$this->email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-		echo	$this->password = hash('whirlpool', $_POST['passwd']);
-		echo	$this->password2 = hash('whirlpool', $_POST['passwd2']);
+			echo	$this->username = filter_var($_POST['username'], FILTER_SANITIZE_STRIPPED);
+			echo	$this->email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+			echo	$this->password = hash('whirlpool', $_POST['passwd']);
+			echo	$this->password2 = hash('whirlpool', $_POST['passwd2']);
 			//unset($_POST['submit']);
 		}
+	}
+	/***************************************\
+	|*  _______SEND VERIFICATION EMAIL____ *|
+	\***************************************/
+	public function send_ver_email(){
+		$msg= "click the link to verify your account: http://127.0.0.1:8080/user/verify/$this->verification_code";
+			$headers = array(
+				'From: noreply');
+
+			mail($email, "Verification email", $msg, implode("\r\n",$headers));
+			echo "<br />Check your email ";
+	}
+	/***************************************\
+   |*  _______VERIFY____                    *|
+	\***************************************/
+	public function verify($code){
+		$getvcode = $_GET['ver_code'];
+
+		
+		echo "$code<br />";
+			$this->model->verify($code);
 	}
 }
 ?>
