@@ -8,8 +8,9 @@ class Controller{
         return $this->view;
 	}
 	public function model(){
-		$this->model = new userModel();
-		return $this->model;
+		echo __CLASS__;
+			//$this->model = new userModel();
+			//return $this->model;
 	}
 }
 ?>
