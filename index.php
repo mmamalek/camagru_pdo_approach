@@ -1,49 +1,19 @@
 <?php
 define(ROOT, __DIR__.'/');
 define(CONFIG, ROOT.'config/');
+define(DOC, ROOT.'public/');
 define(APP, ROOT.'app/');
-define(CONTROLLERS, APP.'controllers/');
-define(MODELS, APP.'models/');
-define(VIEWS, APP.'views/');
-define(SHARED, APP.'shared/'); ?>
-
-<?php include(VIEWS.'header.php'); ?>
-<?php
-
-
-//echo 'request uri: '.$_SERVER["REQUEST_URI"].'<br />';
-
-$modules = [ROOT, APP, CONTROLLERS, MODELS, VIEWS, SHARED];
-
-$my_include_path = implode(':', $modules);
-
-set_include_path(get_include_path().':'.$my_include_path);
-//echo "<br />";
-//var_dump(get_include_path());
-
-
-spl_autoload_register('spl_autoload', false);
-
+define(CONTROLLER, APP.'controller/');
+define(MODEL, APP.'model/');
+define(VIEW, APP.'view/');
+define(LIB, APP.'lib/');
 ?>
 <?php
 session_start();
-if(!isset($_SESSION['logged in user'])){
-	$_SESSION['logged in user'] = '';
-}
-var_dump($_SESSION);
 
+if (!isset($_SESSION['user_id'])){
+    $_SESSION['user_id'] = NULL;
+}
 include(APP.'Application.php');
 $app = new Application();
 ?>
-
-
-
-
-
-
-
-
-
-
-
-<?php include(VIEWS.'footer.html'); ?>

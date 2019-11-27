@@ -12,5 +12,6 @@
 			<script src="media.js"></script>
 		</video>
 	</div>
+	<button id="capture">capture</button>
 </body>
 </html>

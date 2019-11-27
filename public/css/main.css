@@ -1,5 +1,81 @@
+*{
+    box-sizing: border-box;
+    font-size: 100%;
+}
 body{
+    padding: 0;
     margin: 0;
-    padding: 7px;
-    background-color: rgb(216, 143, 143);
+    background-color: #6DAEDB;
+    
+}
+.header{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: block;
+    text-align: center;
+    background-color: #084887;
+    font: bolder;
+}
+
+.header > h1 {
+    display: inline-block;
+    font-weight: 900;
+    text-shadow: 3px 1px 2px white;
+    letter-spacing: 0.6rem;
+    font-size: 3rem;
+    padding: 0;
+    margin: 0;
+}
+.header ul {
+    list-style: none;
+}
+.header ul li{
+    display: inline-block;
+    padding: 1rem;
+    color: cornsilk;
+    font: 1em sans-serif;
+}
+.header ul li a{
+    text-decoration: none;
+    color: cornsilk;
+    font: 1em sans-serif;
+}
+
+.header ul li a:hover{
+    border-bottom: 3px solid cornsilk;
+}
+.contents{
+    width: 100%;
+}
+.form{
+    text-align: center;
+    margin-left: 30px;
+    box-shadow: 2px 2px 7px 1px rgba(0, 0, 0, 0.7);
+    max-width: 400px;
+    background-color: rgb(158, 206, 240);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.form-input{
+    text-align: left;
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"]
+{
+    height: 2rem;
+}
+.footer{
+    padding: 0px;
+    background-color: #084887;
+    position: fixed;
+    width: 100%;
+    bottom: 0%;
+    
+
 }

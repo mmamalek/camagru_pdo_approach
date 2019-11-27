@@ -23,11 +23,11 @@ try
 	$stmt = $conn->prepare("CREATE TABLE IF NOT EXISTS `camagru`.`users` 
 							( `id` INT NOT NULL AUTO_INCREMENT 
 							, `username` VARCHAR(50) NOT NULL 
-							, `passwd` VARCHAR(200) NOT NULL 
 							, `email` VARCHAR(50) NOT NULL 
+							, `passwd` VARCHAR(200) NOT NULL 
+							, `verified` BOOLEAN NOT NULL DEFAULT FALSE 
 							, `notifications` BOOLEAN NOT NULL DEFAULT TRUE 
 							, `verification_code` VARCHAR(50) NOT NULL 
-							, `verified` BOOLEAN NOT NULL DEFAULT FALSE 
 							, PRIMARY KEY (`id`)) ENGINE = InnoDB;");
 	$stmt->execute();
 

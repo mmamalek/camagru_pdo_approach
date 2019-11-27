@@ -1,11 +1,17 @@
-<div class="contents">
+<div class="form">
 <h1>Login</h1>
 <form  action="login" method="POST">
-    <label for="login">login</label>
+    <div class="form-input">
+        <label for="login">login</label>
         <input type="text" placeholder="username or email" name="username" id="username" required/><br />
-    <label for="password">Password</label>
+    </div>
+    <div class="form-input">
+        <label for="password">Password</label>
         <input type="password" placeholder="password" name="passwd" id="password" required/><br />
+    </div>   
     <input type="submit" name="submit" value="Login" />
-     New user? <a href="/user/register">Sign up</a>
+    
 </form>
+<p>New user? <a href="/user/register">Sign up</a></p>
+    <p><a href="/user/forgot">forgot password</a></p>
 </div>
