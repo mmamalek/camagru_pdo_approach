@@ -25,7 +25,17 @@ class imagesModel
 		} catch (PDOException $e) {
 			echo $e->getMessage();
 		}
-    }
+	}
+	
+	public function addImage($imagePath){
+		try {
+			$sql = "INSERT INTO images (`location`, `author`, `likes`, `comments`) VALUES (?, ?, 0, '')";
+			$stmt = $this->dbconnection->prepare($sql);
+			$stmt->execute([$imagePath, $_SESSION['user_id']]);
+		} catch (PDOException $e) {
+			echo $e->getMessage();
+		}
+	}
     
 }
 ?>

@@ -3,6 +3,9 @@ include(LIB.'Controller.php');
 include(MODEL.'imagesModel.php');
 
 class imagesController extends Controller{
+
+    
+
     public function __construct(){
     //    echo '<br />--------'.__CLASS__.' created--------<br />';
 
@@ -32,7 +35,10 @@ class imagesController extends Controller{
             $fileError = $file["error"];
             $fileSize = $file["size"];
 
-            move_uploaded_file($fileTmpName,'uploads/'.uniqid('img-').'.jpg');
+            $newname = 'uploads/'.uniqid('img-').'.jpg';
+            move_uploaded_file($fileTmpName, $newname);
+
+            $this->model->addImage($newname);
             echo 'success';
 
         }
