@@ -6,13 +6,13 @@ class imagesModel
 
 	public function __construct()
 	{
-		echo "------" . __CLASS__ . " Object created---------<br />";
+		//echo "------" . __CLASS__ . " Object created---------<br />";
 		$this->connect();
 	}
 
 	protected function connect()
 	{
-		echo '<br />-----' . __METHOD__ . '----<br />';
+		//echo '<br />-----' . __METHOD__ . '----<br />';
 
 		require(CONFIG . 'database.php');
 
@@ -21,7 +21,7 @@ class imagesModel
 			$this->dbconnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
-			echo "database connection Established.<br>";
+			//echo "database connection Established.<br>";
 		} catch (PDOException $e) {
 			echo $e->getMessage();
 		}
