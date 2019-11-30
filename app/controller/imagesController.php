@@ -14,7 +14,7 @@ class imagesController extends Controller{
     }
 
     public function index(){
-        echo '<br />--------'.__METHOD__.'--------<br />';
+       // echo '<br />--------'.__METHOD__.'--------<br />';
 
         header('Location: images/upload');
         die();
@@ -22,7 +22,7 @@ class imagesController extends Controller{
 
     }
     public function upload(){
-        echo '<br />--------'.__METHOD__.'--------<br />';
+       // echo '<br />--------'.__METHOD__.'--------<br />';
 
         if (empty($_SESSION['user_id'])){
             header('Location: /user/login');
@@ -45,7 +45,7 @@ class imagesController extends Controller{
 
     }
     public function webcam(){
-        echo '<br />--------'.__METHOD__.'--------<br />';
+        //echo '<br />--------'.__METHOD__.'--------<br />';
 
         if (empty($_SESSION['user_id'])){
             header('Location: /user/login');
@@ -79,14 +79,20 @@ class imagesController extends Controller{
     public function dcode(){
     //    echo '<br />--------'.__METHOD__.'--------<br />';
 
-        $data = explode(",", $_POST["image"]);
-        $data = $data[1];
+    
 
-        $image = base64_decode($data);
+        $base64img = $_POST["image"];
+        $base64img = explode(",", $_POST["image"])[1];
+        
+        $base64img = str_replace(' ', '+', $base64img);
+        var_dump($base64img);
+        $imageData = base64_decode($base64img);
+        //$image = imagecreatefromstring($imageData);
 
-        $filename = 'uploads/'.uniqid('img-').'.jpg';
-        $image = imagecreatefromstring($image);
-        file_put_contents($filename, $image);
+        $filename = 'uploads/'.uniqid('img-').'.png';
+        file_put_contents($filename,$imageData);
+        //move_uploaded_file($image, $filename);
+        
         echo "hi";
     }
     
@@ -107,7 +113,7 @@ class imagesController extends Controller{
         $sticker = $sticker[count($sticker) - 1];
         echo $sticker;
 
-        $src = imagecreatefrompng("/sticker\/".$sticker);
+        $src = imagecreatefrompng("/sticker/".$sticker);
         $dst = imagecreatefrompng($filename);
 
         $width = 150;

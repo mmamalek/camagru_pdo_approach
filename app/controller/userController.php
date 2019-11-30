@@ -206,7 +206,7 @@ class userController extends Controller{
     }
     
     public function filter_inputs(){
-       // echo '<br />--------'.__METHOD__.'--------<br />';
+
         if ($_POST['submit'] == 'Login'){
             $this->login = filter_var($_POST['username'], FILTER_SANITIZE_STRIPPED);
             $this->password = hash('whirlpool', $_POST['passwd']);
@@ -235,8 +235,6 @@ class userController extends Controller{
         }
     }
     public function validate_inputs(){
-        //echo '<br />-----'.__METHOD__.'----<br />';
-		
 		
 		if (empty($this->username)){
             echo 'empty username<br />';
@@ -263,7 +261,6 @@ class userController extends Controller{
     }
 
     public function addUser(){
-        //    echo '<br />--------'.__METHOD__.'--------<br />';
 
         $this->verification_code = uniqid();
         if ($this->model->email($this->email)){
@@ -277,7 +274,7 @@ class userController extends Controller{
         }
     }
     public function send_verification_email(){
-        echo '<br />--------'.__METHOD__.'--------<br />';
+
 
         $msg = "click the link to verify your account: http://127.0.0.1:8080/user/verify/$this->verification_code";
         $headers = array('From: noreply');
@@ -287,7 +284,6 @@ class userController extends Controller{
     }
 
     public function send_reset_email(){
-        echo '<br />--------'.__METHOD__.'--------<br />';
         
         $msg = "click the link to reset your password: http://127.0.0.1:8080/user/forgot/$this->verification_code";
             $headers = array(
@@ -299,21 +295,18 @@ class userController extends Controller{
         }
         
         public function generate_code(){
-            echo '<br />--------'.__METHOD__.'--------<br />';
-            echo '<br />--------'.__METHOD__.'--------<br />';
+
         $this->verification_code = uniqid();
         $this->model->addVerificationCodebyEmail($this->email, $this->verification_code);
     }
 
     public function mailsent(){
-        echo '<br />--------'.__METHOD__.'--------<br />';
 
             $this->view = $this->view('user/mailsent');
             $this->view->render();
     }
 
     public function resetpassword(){
-        echo '<br />--------'.__METHOD__.'--------<br />';
 
         $this->filter_inputs();
         if ($_POST['passwd'] != $_POST['passwd2']){
