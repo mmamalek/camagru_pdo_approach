@@ -92,8 +92,10 @@ class imagesController extends Controller{
         $filename = 'uploads/'.uniqid('img-').'.png';
         file_put_contents($filename,$imageData);
         //move_uploaded_file($image, $filename);
+
+        $this->model->addImage($filename);
         
-        echo "hi";
+        echo "hi yoh";
     }
     
     public function dcode2(){

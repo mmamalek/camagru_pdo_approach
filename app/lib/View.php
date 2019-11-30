@@ -1,7 +1,6 @@
 <?php
 class View{
     protected $viewName;
-    protected $viewData;
 
     public function __construct($viewName, $viewData = []){
     //    echo '<br />--------'.__CLASS__.'--------<br />';
@@ -25,3 +24,4 @@ class View{
     }
 }
 ?>
+

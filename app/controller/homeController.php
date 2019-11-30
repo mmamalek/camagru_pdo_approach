@@ -1,9 +1,12 @@
 <?php
 include(LIB.'Controller.php');
+include(MODEL.'imagesModel.php');
+
 class homeController extends Controller{
     public function __construct(){
         //echo '<br />--------'.__CLASS__.'--------<br />';
 
+        $this->model = new imagesModel();
     }
     
     public function index(){
@@ -14,7 +17,9 @@ class homeController extends Controller{
     
     
     public function gallery(){
-        $this->view = $this->view("home/gallery");
+        $images = $this->model->getImages();
+        
+        $this->view = $this->view("home/gallery", [$images]);
         $this->view->render();
 
         die();

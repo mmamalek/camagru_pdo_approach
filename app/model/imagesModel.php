@@ -36,6 +36,46 @@ class imagesModel
 			echo $e->getMessage();
 		}
 	}
+
+	
+	public function getImage($imageId){
+
+		$sql = "SELECT * FROM `images` WHERE `id` = ?";
+		try {
+			$stmt = $this->dbconnection->prepare($sql);
+			$stmt->execute([$imageId]);
+			$results = $stmt->fetch(PDO::FETCH_OBJ);
+
+			if ($results)
+				return $results;
+			else
+				return FALSE;
+		} catch (PDOException $e) {
+			echo $e->getMessage();
+			return FALSE;
+		}
+	}
+
+	
+	public function getImages(){
+
+		$sql = "SELECT * FROM `images` ORDER BY `creation_date` DESC";
+		try {
+			$stmt = $this->dbconnection->prepare($sql);
+			$stmt->execute();
+			$results = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+			if ($results)
+				return $results;
+			else
+				return FALSE;
+		} catch (PDOException $e) {
+			echo $e->getMessage();
+			return FALSE;
+		}
+	}
+
+
     
 }
 ?>

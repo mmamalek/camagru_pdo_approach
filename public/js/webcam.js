@@ -52,7 +52,7 @@ function sendImage(){
         }
     };
     xhttp.open("POST", "/images/dcode", true);
-    xhttp.setRequestHeader("Content-type", "image/png");
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("image=" + dataURL);
 }
 
