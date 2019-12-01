@@ -38,7 +38,7 @@ try
 							, `author` VARCHAR(20) NOT NULL
 							, `creation_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 							, `likes` TEXT NOT NULL
-							, `comments` TEXT NOT NULL
+							, `comments` TEXT NOT NULL 
 							, PRIMARY KEY (`id`)) ENGINE = InnoDB");
 	$stmt->execute();
 	echo "Tables Created.<br>";

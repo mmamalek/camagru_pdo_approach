@@ -2,7 +2,7 @@
 
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
-const snap = document.getElementById("snap");
+const capture = document.getElementById("snap");
 const errorMsgElement = document.querySelector('span#errorMsg');
 
 const constraints = {
@@ -33,8 +33,9 @@ init();
 
 // Draw image
 var context = canvas.getContext('2d');
-snap.addEventListener("click", function() {
-	context.drawImage(video, 0, 0, 640, 480);
+capture.addEventListener("click", function() {
+  context.drawImage(video, 0, 0, 640, 480);
+  sendImage();
 });
 
 
@@ -47,8 +48,8 @@ function sendImage(){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            //document.getElementById("demo").innerHTML = this.responseText;
-            console.log(this.responseText);
+            addImageToPage(this.responseText);
+            setActionListeners();
         }
     };
     xhttp.open("POST", "/images/dcode", true);
@@ -60,70 +61,61 @@ function sendImage(){
 
 
 
-function saveImage3(){
 
-    var dataURL = canvas.toDataURL();
-    //console.log(dataURL);
+function addImageToPage(imageURL){
     
-    const form = document.createElement("form");
-    form.action = "/images/dcode";
-    form.method = "POST";
+    var preview = document.getElementById("preview");
 
-    var input = document.createElement("input");
-    input.type = "hidden";
-    input.name = "image";
-    input.value = dataURL;
+    
+    var image = document.createElement("img");
+    var saveButton = document.createElement("button");
+    var deleteButton = document.createElement("button");
+    var imagePreview = document.createElement("div");
 
-    var stickerURL = document.getElementById("sticker1").src;
+    image.src = "/" + imageURL;
 
-    var sticker = document.createElement("input");
-    sticker.type = "hidden";
-    sticker.name = "sticker";
-    sticker.value = stickerURL;
 
-    form.appendChild(sticker);
-    form.appendChild(input);
-    document.body.appendChild(form);
-    form.submit();
+    saveButton.type="button";
+    saveButton.className = "save-button"
+    saveButton.id = imageURL;
+    saveButton.innerHTML = "save";
 
+    deleteButton.type = "button";
+    deleteButton.className = "delete-button";
+    deleteButton.id = imageURL;
+    deleteButton.innerHTML = "delete";
+  
+    imagePreview.className = "image-preview";
+  
+    imagePreview.appendChild(image);
+    imagePreview.appendChild(saveButton);
+    imagePreview.appendChild(deleteButton);
+    preview.appendChild(imagePreview);
 }
 
-var save = document.getElementById("save");
+function setActionListeners(){
+  console.log("supposed to set action listers");
 
-save.addEventListener("click", sendImage);
+  var saveButtons = document.getElementsByClassName("save-button");
+  var deleteButtons = document.getElementsByClassName("delete-button");
+  let i = 0;
+  let j = 0;
 
+  while(saveButtons[i]){
+    saveButtons[i].addEventListener("click", saveImage);
+    i++;
+  }
 
+  while(deleteButtons[j]){
+    deleteButtons[j].addEventListener("click", deleteImage);
+    j++;
+  }
+}
 
+function saveImage(action){
+  console.log("save " + action.srcElement.id);
+}
 
-
-// function saveImage2(){
-
-//     var dataURL = canvas.toDataURL();
-//     //console.log(dataURL);
-    
-//     const form = document.createElement("form");
-//     form.action = "/images/dcode2";
-//     form.method = "POST";
-
-//     var input = document.createElement("input");
-//     input.type = "hidden";
-//     input.name = "image";
-//     input.value = dataURL;
-
-//     var stickerURL = document.getElementById("sticker1").src;
-
-//     var sticker = document.createElement("input");
-//     sticker.type = "hidden";
-//     sticker.name = "sticker";
-//     sticker.value = stickerURL;
-
-//     form.appendChild(sticker);
-//     form.appendChild(input);
-//     document.body.appendChild(form);
-//     form.submit();
-
-// }
-
-// var save = document.getElementById("save");
-
-// save.addEventListener("click", saveImage2);
+function deleteImage(action){
+  console.log("delete " + action.srcElement.id);
+}

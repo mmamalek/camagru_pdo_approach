@@ -73,9 +73,13 @@ input[type="password"]
 .footer{
     padding: 0px;
     background-color: #084887;
-    position: fixed;
+    /*position: fixed;*/
     width: 100%;
     bottom: 0%;
     
 
+}
+
+#canvas{
+    display: none;
 }

@@ -29,7 +29,7 @@ class imagesModel
 	
 	public function addImage($imagePath){
 		try {
-			$sql = "INSERT INTO images (`location`, `author`, `likes`, `comments`) VALUES (?, ?, 0, '')";
+			$sql = "INSERT INTO images (`location`, `author`, `likes`, `comments`) VALUES (?, ?, 'a:0:{}', 'a:0:{}')";
 			$stmt = $this->dbconnection->prepare($sql);
 			$stmt->execute([$imagePath, $_SESSION['user_id']]);
 		} catch (PDOException $e) {
@@ -75,6 +75,42 @@ class imagesModel
 		}
 	}
 
+	function liked($imageId, $username){
+		$image = $this->getImage($imageId);
+
+		$likers = unserialize($image->likes);
+
+		foreach($likers as $i => $liker){
+			if ($liker == $username){
+				return ($i);
+			}
+		}
+		return (NULL);
+	}
+
+	function like($imageId, $username){
+		$image = $this->getImage($imageId);
+
+		$likers = unserialize($image->likes);
+
+		if (!$this->liked){
+			$likers[] = $username;
+		}
+		$likes = count(likers);
+		$new = serialize($likers);
+
+		try {
+			$sql = "UPDATE `images` SET `likes` = ? WHERE `id` = ?";
+			$stmt = $this->dbconnection->prepare($sql);
+			$stmt->execute([$new, $imageId]);
+
+			return TRUE;
+		} catch (PDOException $e) {
+			echo $e->getMessage();
+			return FALSE;
+		}
+
+	}
 
     
 }

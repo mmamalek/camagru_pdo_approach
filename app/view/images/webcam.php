@@ -1,13 +1,3 @@
-<!-- <link rel="stylesheet" href="/style.css">
-<h1>Webcam</h1>
-<div class="container">
-	<video id="video"></video>
-	<button id="capture"></button>
-	<canvas id="canvas"></canvas>
-	<script>
-		
-	</script>
-</div> -->
 
 <div class="video-wrap">
     <video id="video" playsinline autoplay></video>
@@ -23,5 +13,6 @@
 </div>
 
 <canvas id="canvas" width="640" height="480"></canvas>
+<div id="preview"></div>
 
 <script src="/public/js/webcam.js"></script>
