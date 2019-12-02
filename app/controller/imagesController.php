@@ -119,8 +119,42 @@ class imagesController extends Controller{
         $imageData = base64_decode($base64img);
      
 
-        $filename = 'uploads/'.uniqid('img-').'.png';
+        $filename = 'temp_uploads/'.uniqid('img-').'.png';
         file_put_contents($filename,$imageData);
+        
+        echo $filename;
+    }
+
+    public function save($imageDir, $imageName){
+
+        $src = $imageDir . "/" . $imageName;
+        $dest = "uploads/" . $imageName;    
+        move_uploaded_file($src, $dest);
+
+        if(file_exists($src)){
+            rename($src, $dest);
+            echo "moved";
+        } else {
+            echo "not exist";
+        }
+
+     
+
+        echo $src . " -> " . $dest . "\n";
+    
+ 
+
+        $this->model->addImage($dest);
+        
+    }
+
+    public function delete($imageDir, $imageName){
+    //    echo '<br />--------'.__METHOD__.'--------<br >';
+
+     
+
+        $filename = $imageDir . "/" . $imageName;
+        unlink($filename);
  
 
         $this->model->addImage($filename);

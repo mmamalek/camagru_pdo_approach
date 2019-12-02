@@ -9,7 +9,6 @@
 
 <div class="controller">
     <button id="snap">Capture</button>
-    <button id="save">Save</button>
 </div>
 
 <canvas id="canvas" width="640" height="480"></canvas>

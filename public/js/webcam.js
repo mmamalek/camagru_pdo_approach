@@ -94,7 +94,6 @@ function addImageToPage(imageURL){
 }
 
 function setActionListeners(){
-  console.log("supposed to set action listers");
 
   var saveButtons = document.getElementsByClassName("save-button");
   var deleteButtons = document.getElementsByClassName("delete-button");
@@ -113,9 +112,56 @@ function setActionListeners(){
 }
 
 function saveImage(action){
-  console.log("save " + action.srcElement.id);
+  //console.log("save " + action.srcElement.id);
+
+  var imageName = action.srcElement.id;
+  var image = document.getElementById(imageName);
+  var imageContainer = image.parentElement;
+  var imagePreviewWindow = imageContainer.parentElement;
+    
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            //console.log(this.responseText);
+            imagePreviewWindow.removeChild(imageContainer);
+            
+        }
+    };
+    xhttp.open("POST", "/images/save/" + imageName, true);
+    
+    xhttp.send("image=" + imageName);
 }
 
 function deleteImage(action){
-  console.log("delete " + action.srcElement.id);
+  //console.log("delete " + action.srcElement.id);
+
+  var imageName = action.srcElement.id;
+  var image = document.getElementById(imageName);
+  var imageContainer = image.parentElement;
+  var imagePreviewWindow = imageContainer.parentElement;
+
+    
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            //console.log(this.responseText);
+            imagePreviewWindow.removeChild(imageContainer);
+        }
+    };
+    xhttp.open("POST", "/images/delete/" + imageName, true);
+    
+    xhttp.send("image=" + imageName);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
