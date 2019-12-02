@@ -1,13 +1,50 @@
 //var comment = document.getElementsById("like-cb");
-var like = document.getElementById("like");
+var like = document.getElementById("like-button");
 var comment = document.getElementById("comment-text");
 var send = document.getElementById("send-comment");
 
 send.addEventListener("click", sendComment);
 like.addEventListener("click", sendLike);
 
-function sendComment(){
+function sendComment(x){
     console.log(comment.value);
+
+    var srcURI = x.srcElement.baseURI;
+
+   
+    
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+            window.reload();
+        }
+    };
+    xhttp.open("POST", "/images/comment", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("image=" + srcURI + "&comment=" + comment.value);
+
+    
+}
+
+function getComments(x){
+
+    var srcURI = x.srcElement.baseURI;
+
+   
+    
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            //console.log(this.responseText);
+            return (this.responseText);
+        }
+    };
+    xhttp.open("POST", "/images/getComments", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("image=" + srcURI);
+
+    
 }
 
 function sendLike(x){
@@ -18,7 +55,10 @@ function sendLike(x){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
+            //console.log(this.responseText);
+            var likes = document.getElementById("likes-count");
+            likes.innerHTML = this.responseText;
+            updateLikeButton(x);
         }
     };
     xhttp.open("POST", "/images/like", true);
@@ -27,3 +67,32 @@ function sendLike(x){
 
     
 }
+
+function updateLikeButton(x){
+    var srcURI = x.srcElement.baseURI;
+    var like = document.getElementById("like-button");
+    
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+            if (this.responseText){
+                like.innerHTML = "unlike";
+            } else {
+                like.innerHTML = "like";
+            }
+        }
+    };
+    xhttp.open("POST", "/images/liked", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("image=" + srcURI);
+
+    
+}
+
+function updateComments(x){
+    var comments = getComments(x);
+    var commentsBlock = document.getElementById("comments-block");
+    console.log(comments);
+}
+

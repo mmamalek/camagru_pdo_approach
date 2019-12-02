@@ -80,37 +80,96 @@ class imagesModel
 
 		$likers = unserialize($image->likes);
 
-		foreach($likers as $i => $liker){
+		foreach($likers as  $i=>$liker){
 			if ($liker == $username){
-				return ($i);
+				return (TRUE);
 			}
 		}
-		return (NULL);
+		return (FALSE);
 	}
 
-	function like($imageId, $username){
+	function unlike($imageId, $username){
+	
 		$image = $this->getImage($imageId);
-
 		$likers = unserialize($image->likes);
 
-		if (!$this->liked){
-			$likers[] = $username;
+		foreach($likers as  $i=>$liker){
+			if ($liker == $username){
+				unset($likers[$i]);
+			}
 		}
-		$likes = count(likers);
-		$new = serialize($likers);
 
+		$likers = array_values($likers);
+		$likes = count($likers);
+		$new = serialize($likers);
 		try {
 			$sql = "UPDATE `images` SET `likes` = ? WHERE `id` = ?";
 			$stmt = $this->dbconnection->prepare($sql);
 			$stmt->execute([$new, $imageId]);
-
-			return TRUE;
 		} catch (PDOException $e) {
 			echo $e->getMessage();
 			return FALSE;
 		}
+		return $likes;
+	}
+
+	function like($imageId, $username){
+		
+		if (!$this->liked($imageId, $username)){
+
+			$image = $this->getImage($imageId);
+			$likers = unserialize($image->likes);
+			$likers[] = $username;
+			$likes = count($likers);
+			$new = serialize($likers);
+			
+			try {
+				$sql = "UPDATE `images` SET `likes` = ? WHERE `id` = ?";
+				$stmt = $this->dbconnection->prepare($sql);
+				$stmt->execute([$new, $imageId]);
+			} catch (PDOException $e) {
+				echo $e->getMessage();
+				return FALSE;
+			}
+			return $likes;
+		}
+		return $this->unlike($imageId, $username);
+	}
+	
+	function comment($imageId, $comment){
+		
+		$image = $this->getImage($imageId);
+		$comments = unserialize($image->comments);
+		$comments[] = $comment;
+		$commentsCount = count($comments);
+		$new = serialize($comments);
+		
+		try {
+			$sql = "UPDATE `images` SET `comments` = ? WHERE `id` = ?";
+			$stmt = $this->dbconnection->prepare($sql);
+			$stmt->execute([$new, $imageId]);
+		} catch (PDOException $e) {
+			echo $e->getMessage();
+			return FALSE;
+		}
+		return $commentsCount;
 
 	}
+	
+	function getComments($imageId){
+		
+		$image = $this->getImage($imageId);
+		$comments = unserialize($image->comments);
+		return $comments;
+	}
+	
+	function getCommentsCount($imageId){
+		
+		$image = $this->getImage($imageId);
+		$comments = unserialize($image->comments);
+		return count($comments);
+	}
+
 
     
 }

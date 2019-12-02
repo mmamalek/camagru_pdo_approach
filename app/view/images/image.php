@@ -10,15 +10,14 @@ $likes = unserialize($image->likes);
 <?php
 echo "<p>uploaded by <strong>$author</strong></p>";
 echo "<img src='/$image->location' />";
-echo "<span>Likes: " . count($likes) . "</span>";
+echo "<span>Likes: <span id='likes-count'>" . count($likes) . "</span></span>";
 ?>
 <?php
     if(!empty($_SESSION["user_id"])){
-        echo "<input type='checkbox' id='like-cb' />";
-        echo "<label for='like-cb'>text<button id='like'>like</button></label>";
+        echo "<button id='like-button'>like</button>";
     }
 ?>
-<div class="comments">
+<div id="comments-block">
     <?php
         foreach($comments as $comment){
             foreach($comment as $author=>$text){

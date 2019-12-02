@@ -35,16 +35,72 @@ class imagesController extends Controller{
         }
     }
 
-    public function like(){
+    public function like($imageId = ""){
 
-        if (!empty($_SESSION["user_id"])){
+        if (!empty($_SESSION["user_id"]) ){
 
+            
             $srcURI = explode("/", $_POST["image"]);
-            echo ($imageId = $srcURI[count($srcURI) - 1]);
+
+            $imageId = $srcURI[count($srcURI) - 1];
             
             
             $username = $this->user->get_user($_SESSION["user_id"])->username;
             $results = $this->model->like($imageId, $username);
+            
+            echo $results;
+        }
+    }
+    
+    public function comment($imageId = ""){
+
+        if (!empty($_SESSION["user_id"]) ){
+
+            
+            $srcURI = explode("/", $_POST["image"]);
+            $commentText = $_POST["comment"];
+            $username = $this->user->get_user($_SESSION["user_id"])->username;
+            $imageId = $srcURI[count($srcURI) - 1];
+
+            $comment = Array($username=>$commentText);
+            
+            $results = $this->model->comment($imageId, $comment);
+            
+            //$results = $this->model->comment($imageId, $comment);
+            
+            var_dump($results);
+        }
+    }
+    
+    public function getComments($imageId = ""){
+
+            $srcURI = explode("/", $_POST["image"]);
+            
+            $imageId = $srcURI[count($srcURI) - 1];
+
+            $comments = $this->model->getComments($imageId);
+            
+            $results = "";
+        foreach($comments as $comment){
+            foreach($comment as $author=>$text){
+                $results = $results . "<p><strong>$author</strong> $text</p> \n";
+            }
+        }
+            
+        var_dump($results);
+    }
+    
+
+    public function liked($imageId = ""){
+
+        if (!empty($_SESSION["user_id"]) ){
+
+            $srcURI = explode("/", $_POST["image"]);
+
+            $imageId = $srcURI[count($srcURI) - 1];
+            $username = $this->user->get_user($_SESSION["user_id"])->username;
+            $results = $this->model->liked($imageId, $username);
+
             
             echo $results;
         }
@@ -155,10 +211,6 @@ class imagesController extends Controller{
 
         $filename = $imageDir . "/" . $imageName;
         unlink($filename);
- 
-
-        $this->model->addImage($filename);
-        
         echo $filename;
     }
 
