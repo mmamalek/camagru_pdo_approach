@@ -17,12 +17,13 @@ function sendComment(x){
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             console.log(this.responseText);
-            window.reload();
+            window.getComments(x);
         }
     };
     xhttp.open("POST", "/images/comment", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("image=" + srcURI + "&comment=" + comment.value);
+    comment.value = "";
 
     
 }
@@ -30,14 +31,15 @@ function sendComment(x){
 function getComments(x){
 
     var srcURI = x.srcElement.baseURI;
-
+    var commentsBlock = document.getElementById("comments-block");
    
     
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            //console.log(this.responseText);
-            return (this.responseText);
+            console.log(this.responseText);
+            commentsBlock.innerHTML = this.responseText;
+            //return (this.responseText);
         }
     };
     xhttp.open("POST", "/images/getComments", true);

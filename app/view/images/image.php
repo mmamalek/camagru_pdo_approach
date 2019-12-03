@@ -1,7 +1,7 @@
 <?php
-var_dump($this->Array[0]);
 $image = $this->Array[0];
 $author = $this->Array[1];
+$liked = $this->Array[2];
 $comments = unserialize($image->comments);
 $likes = unserialize($image->likes);
 
@@ -14,17 +14,21 @@ echo "<span>Likes: <span id='likes-count'>" . count($likes) . "</span></span>";
 ?>
 <?php
     if(!empty($_SESSION["user_id"])){
-        echo "<button id='like-button'>like</button>";
+        echo "<button id='like-button'>";
+        echo ($liked ? "unlike": "like");
+        echo "</button>";
     }
 ?>
+<div id="comments">
 <div id="comments-block">
     <?php
         foreach($comments as $comment){
             foreach($comment as $author=>$text){
-                echo "<p><strong>$author</strong>$text</p>";
+                echo "<p><strong>$author</strong>" .base64_decode($text) . "</p>";
             }
         }
     ?>
+</div>
     <?php
         if(!empty($_SESSION["user_id"])){
             echo "<textarea id='comment-text'></textarea>";
@@ -32,4 +36,5 @@ echo "<span>Likes: <span id='likes-count'>" . count($likes) . "</span></span>";
             echo "<script src='/public/js/image.js'></script>";
         }
     ?>
+
 </div>

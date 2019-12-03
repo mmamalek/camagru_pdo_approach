@@ -28,10 +28,11 @@ class imagesController extends Controller{
         if ($imageId){
             $image = $this->model->getImage($imageId);
             $authorName = $this->user->get_user($image->author)->username;
+            $username = $this->user->get_user($_SESSION["user_id"])->username;
+            $liked = $this->model->liked($imageId, $username);
 
-            $this->view = $this->view("images/image", [$image, $authorName]);
+            $this->view = $this->view("images/image", [$image, $authorName, $liked]);
             $this->view->render();
-            echo "hi";
         }
     }
 
@@ -62,7 +63,9 @@ class imagesController extends Controller{
             $username = $this->user->get_user($_SESSION["user_id"])->username;
             $imageId = $srcURI[count($srcURI) - 1];
 
+            $commentText = base64_encode($commentText);
             $comment = Array($username=>$commentText);
+
             
             $results = $this->model->comment($imageId, $comment);
             
@@ -83,11 +86,11 @@ class imagesController extends Controller{
             $results = "";
         foreach($comments as $comment){
             foreach($comment as $author=>$text){
-                $results = $results . "<p><strong>$author</strong> $text</p> \n";
+                $results = $results . "<p><strong>$author</strong>". base64_decode($text) . "</p> \n";
             }
         }
             
-        var_dump($results);
+        echo $results;
     }
     
 

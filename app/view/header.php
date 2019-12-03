@@ -15,12 +15,9 @@ session_start();
         <h1>Camagru</h1>
         <ul id="nav">
             <li><a href="/home">Home</a></li>
-            <li><a href="#">menu item 1</a></li>
-            <li><a href="#">menu item 1</a></li>
-            <li><a href="#">menu item 1</a></li>
-            <li><a href="#">menu item 1</a></li>
-            <li><a href="#">menu item 1</a></li>
-            <li><a href="#">menu item 1</a></li>
+            <li><a href="/user/profile">profile</a></li>
+            <li><a href="images/webcam">Camera</a></li>
+            <li><a href="/user/logout">logout</a></li>
         </ul>
     </div>
     <div class="contents">
