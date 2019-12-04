@@ -74,6 +74,24 @@ class imagesModel
 			return FALSE;
 		}
 	}
+	
+	public function getUserImages($userId){
+
+		$sql = "SELECT * FROM `images` WHERE `author` = ? ORDER BY `creation_date` DESC";
+		try {
+			$stmt = $this->dbconnection->prepare($sql);
+			$stmt->execute([$userId]);
+			$results = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+			if ($results)
+				return $results;
+			else
+				return FALSE;
+		} catch (PDOException $e) {
+			echo $e->getMessage();
+			return FALSE;
+		}
+	}
 
 	function liked($imageId, $username){
 		$image = $this->getImage($imageId);

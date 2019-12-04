@@ -83,3 +83,85 @@ input[type="password"]
 #canvas{
     display: none;
 }
+
+.gallery-image-block{
+    box-sizing: border-box;
+    display: inline-block;
+    width: 400px;
+
+    margin: 3px;
+    padding: 3px;
+    margin-top: 6px;
+    animation-duration: 10s;
+}
+
+.gallery-image-block:hover{
+    border: solid blueviolet;
+    
+}
+
+.image-preview{
+    width:  100%;
+    max-height: 90vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: auto;
+    margin-bottom: 5px;
+
+}
+
+.image-preview > img{
+    width: 100%;
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+.gallery-image{
+    width: 98%;
+    margin: 3px;
+}
+
+.gallery-image-likes{
+    display: inline-block;
+    width: 25%;
+    padding: 3px;
+    box-sizing: border-box;
+}
+
+.webcam-container{
+    display: grid;
+    grid-template-columns: 1fr 5fr 2fr;
+}
+#video{
+    width: 98%;
+}
+#preview{
+    width: 98%;
+
+}
+#preview-image{
+    display: inline-block;
+    width: 100%;
+}
+
+.video-preview{
+    position: relative;
+}
+#sticker0-preview{
+    position: absolute;
+    top: 300px;
+}
+
+#sticker1-preview{
+    position: absolute;
+    top: 300px;
+}
+
+#sticker2-preview{
+    position: absolute;
+    top: 300px;
+}
+
+input[name="sticker"]{
+    visibility: hidden;
+}

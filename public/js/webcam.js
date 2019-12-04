@@ -39,12 +39,47 @@ capture.addEventListener("click", function() {
 });
 
 
+document.getElementById("sticker1").addEventListener("click", function() {
+  stickersLivePreview()
+});
+document.getElementById("sticker2").addEventListener("click", function() {
+  stickersLivePreview()
+});
+document.getElementById("sticker3").addEventListener("click", function() {
+  stickersLivePreview()
+});
+
+function stickersLivePreview()
+{
+  var stickers = document.getElementsByName("sticker");
+    var i = 0;
+    while(stickers[i]){
+      if (stickers[i].checked){
+        document.getElementById("sticker" + i  + "-preview").style.visibility = "visible";
+        document.getElementById("sticker" + i  + "-preview").firstChild.src= "/sticker/sticker"+i+".png"; 
+      }
+      else{
+        document.getElementById("sticker" + i + "-preview").style.visibility = "hidden";
+        document.getElementById("sticker" + i + "-preview").firstChild.src = "";
+      }
+      i++;
+    }
+}
+
 //send image to server
 function sendImage(){
 
     var dataURL = canvas.toDataURL();
+    var stickers = document.getElementsByName("sticker");
     //console.log(dataURL);
-    
+    var selectedStickers = '';
+    var i = 0;
+    while(stickers[i]){
+      if (stickers[i].checked){
+        selectedStickers = selectedStickers + "," + i;
+      }
+      i++;
+    }
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -54,7 +89,7 @@ function sendImage(){
     };
     xhttp.open("POST", "/images/dcode", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send("image=" + dataURL);
+    xhttp.send("image=" + dataURL + "&stickers=" + selectedStickers);
 }
 
 

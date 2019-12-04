@@ -1,5 +1,6 @@
 <?php
 session_start();
+$login = (empty($_SESSION["user_id"]) ? "login" : "logout");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,10 +15,11 @@ session_start();
     <div class="header">
         <h1>Camagru</h1>
         <ul id="nav">
-            <li><a href="/home">Home</a></li>
-            <li><a href="/user/profile">profile</a></li>
-            <li><a href="images/webcam">Camera</a></li>
-            <li><a href="/user/logout">logout</a></li>
+            <li><a href="/home">Gallery</a></li>
+            <li><a href="/images/webcam">Camera</a></li>
+            <?php echo (($login == "logout") ? '<li><a href="/home/myalbum">My Album</a></li>' : '' ); ?>
+            <?php echo (($login == "logout") ? '<li><a href="/user/profile">profile</a></li>' : '' ); ?>
+            <li><?php echo "<a href='/user/$login' >$login </a>"; ?></li>
         </ul>
     </div>
     <div class="contents">

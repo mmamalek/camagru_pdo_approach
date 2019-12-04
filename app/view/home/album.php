@@ -1,4 +1,4 @@
-<h1>Gallery</h1>
+<h1>My Album</h1>
 <?php
 $images = $this->Array[0];
 ?>
@@ -13,9 +13,11 @@ $images = $this->Array[0];
         echo "<img src='/$image->location' class='gallery-image' />";
         echo "<span class='gallery-image-likes' >" . $likes . (($likes == 1) ? " like" : " likes") .  "</span>";
         echo "<span class='gallery-image-comments' >" . $comments . (($comments == 1) ? " comment" : " comments") .  "</span>";
+        
        // var_dump($image->location);
         echo "</div>";
         echo "</a>";
+        
         
     }
 ?>

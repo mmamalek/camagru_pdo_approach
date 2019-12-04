@@ -24,6 +24,15 @@ class homeController extends Controller{
 
         die();
     }
+    
+    public function myalbum(){
+        $images = $this->model->getUserImages($_SESSION["user_id"]);
+        
+        $this->view = $this->view("home/album", [$images]);
+        $this->view->render();
+
+        die();
+    }
 
 
 

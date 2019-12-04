@@ -181,7 +181,42 @@ class imagesController extends Controller{
         $filename = 'temp_uploads/'.uniqid('img-').'.png';
         file_put_contents($filename,$imageData);
         
+       // $stickerNo = "2";
+        //$this->addSticker($filename, $stickerNo);
+        
+        $stickers = explode(",", $_POST["stickers"]);
+        unset($stickers[0]);
+
+        foreach($stickers as $sticker){
+            $this->addSticker($filename, $sticker);
+           // echo "console.log($sticker)";
+        }
         echo $filename;
+    }
+
+    public function addSticker($filename, $stickerNo){
+
+        $sticker = "sticker/sticker".$stickerNo.".png";
+        $dest = imagecreatefrompng($filename);
+        $src = imagecreatefrompng($sticker);
+
+        if ($stickerNo == "0"){
+            $dest_x = 0;
+            $dest_y = 0;
+        }
+        else if ($stickerNo == "1"){
+            $dest_x = 200;
+            $dest_y = 300;
+        }
+        else if ($stickerNo == "2"){
+            $dest_x = 200;
+            $dest_y = 0;
+        }
+
+        $src_w = imagesx($src);
+        $src_h = imagesy($src);
+        imagecopyresampled($dest, $src, $dest_x, $dest_y, 0, 0, 100, 100, $src_w, $src_h);
+        imagepng($dest, $filename);
     }
 
     public function save($imageDir, $imageName){

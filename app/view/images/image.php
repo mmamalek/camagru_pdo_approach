@@ -36,5 +36,10 @@ echo "<span>Likes: <span id='likes-count'>" . count($likes) . "</span></span>";
             echo "<script src='/public/js/image.js'></script>";
         }
     ?>
+    <?php
+        if($image->author == $_SESSION["user_id"]){
+            echo "<button id='delete-post'>delete-post</button>";
+        }
+    ?>
 
 </div>

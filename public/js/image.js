@@ -2,9 +2,12 @@
 var like = document.getElementById("like-button");
 var comment = document.getElementById("comment-text");
 var send = document.getElementById("send-comment");
+var deletePost = document.getElementById("delete-post");
 
+console.log(deletePost);
 send.addEventListener("click", sendComment);
 like.addEventListener("click", sendLike);
+deletePost.addEventListener("click", deleteImage);
 
 function sendComment(x){
     console.log(comment.value);
@@ -98,3 +101,6 @@ function updateComments(x){
     console.log(comments);
 }
 
+function deleteImage(x){
+    console.log("delete me");
+}
