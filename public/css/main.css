@@ -48,7 +48,12 @@ body{
 .contents{
     width: 100%;
 }
+
+.commenter-name{
+    margin-right: 1rem;
+}
 .form{
+    
     text-align: center;
     margin-left: 30px;
     box-shadow: 2px 2px 7px 1px rgba(0, 0, 0, 0.7);
@@ -164,4 +169,15 @@ input[type="password"]
 
 input[name="sticker"]{
     visibility: hidden;
+}
+#delete-post{
+    cursor: pointer;
+}
+.pager{
+    background-color: #fff;
+    display: block;
+    
+}
+.paging-button{
+    margin: 10px 10px;
 }

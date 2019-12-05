@@ -1,8 +1,22 @@
 <h1>Gallery</h1>
 <?php
 $images = $this->Array[0];
+$offset = $this->Array[1];
+if ($offset == "zero") $offset = 0;
+$offset++;
+$max = ($offset + 4);
+$total = $this->Array[2];
+$pageNo = $this->Array[3];
+$next = $pageNo + 1;
+$prev = $pageNo - 1;
+if ($max > $total) $max = $total;
 ?>
 <div class="gallery-container">
+<p class="page-image-range">   
+    <?php
+        echo "showing images <strong>$offset</strong> to <strong>$max</strong> of <strong>$total</strong>";    
+    ?>
+</p>
 <?php
     foreach($images as $image){
         $imageId = $image->id;
@@ -16,7 +30,16 @@ $images = $this->Array[0];
        // var_dump($image->location);
         echo "</div>";
         echo "</a>";
-        
     }
 ?>
+<div class="pager">
+<?php
+    if ($offset != 1){
+        echo "<a href='/home/gallery/$prev' class='paging-button prev'>Previous Page</a>";
+    }
+    if($max != $total){
+        echo "<a href='/home/gallery/$next' class='paging-button next'>Next Page</a>";    
+    }    
+?>
+</div>
 </div>

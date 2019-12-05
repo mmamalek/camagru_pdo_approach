@@ -13,13 +13,16 @@
 
 <div class="video-preview">
 	<div id="sticker0-preview"><img width="150"/></div>
-	<div id="sticker1-preview"><img  width="150"/></div>
-	<div id="sticker2-preview"><img  width="150"/></div>
-    <video id="video" playsinline autoplay></video>
+	<div id="sticker1-preview"><img width="150"/></div>
+	<div id="sticker2-preview"><img width="150"/></div>
+
+	<video id="video" >Something went wrong</video>
+	<button id="start-button">start</button>
     <div class="capture-button">
         <button id="snap">Capture</button>
     </div>
 </div>
+
 
 
 

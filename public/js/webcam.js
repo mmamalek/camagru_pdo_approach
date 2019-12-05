@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
@@ -12,24 +12,40 @@ const constraints = {
   }
 };
 
-// Access webcam
-async function init() {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia(constraints);
-    handleSuccess(stream);
-  } catch (e) {
-    errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
-  }
-}
 
-// Success
-function handleSuccess(stream) {
-  window.stream = stream;
-  video.srcObject = stream;
-}
 
-// Load init
-init();
+
+
+// // Access webcam
+// async function init() {
+//   console.log("initializing camera");
+//   try {
+//     const stream = await navigator.mediaDevices.getUserMedia(constraints);
+//     // const stream = navigator.mediaDevices.getUserMedia(constraints);
+//     // console.log("init success");
+//     // console.log(stream);
+//     window.stream = stream;
+//     video.srcObject = stream;
+//     // handleSuccess(stream)
+  
+  
+//   } catch (e) {
+//     errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
+//   }
+// }
+
+// //Success
+// function handleSuccess(stream) {
+//   console.log("init success");
+//   console.log(stream);
+//   window.stream = stream;
+//   video.srcObject = stream;
+//  // video.src = stream;
+//   //video.play();
+// }
+
+// //Load init
+// init();
 
 // Draw image
 var context = canvas.getContext('2d');

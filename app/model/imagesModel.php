@@ -57,39 +57,82 @@ class imagesModel
 	}
 
 	
-	public function getImages(){
+	public function getImages($limit = '', $offset = ''){
 
-		$sql = "SELECT * FROM `images` ORDER BY `creation_date` DESC";
-		try {
-			$stmt = $this->dbconnection->prepare($sql);
-			$stmt->execute();
-			$results = $stmt->fetchAll(PDO::FETCH_OBJ);
-
-			if ($results)
+		if (empty($limit) || empty($offset)){
+			$sql = "SELECT * FROM `images` ORDER BY `creation_date` DESC";
+			try {
+				$stmt = $this->dbconnection->prepare($sql);
+				$stmt->execute();
+				$results = $stmt->fetchAll(PDO::FETCH_OBJ);
+				
+				if ($results)
 				return $results;
-			else
+				else
 				return FALSE;
-		} catch (PDOException $e) {
-			echo $e->getMessage();
-			return FALSE;
+			} catch (PDOException $e) {
+				echo $e->getMessage();
+				return FALSE;
+			}
+		} else {
+			
+			if ($offset == "zero") $offset = 0;
+			
+			$sql = "SELECT * FROM `images` ORDER BY `creation_date` DESC LIMIT $limit OFFSET $offset";
+			try {
+				$stmt = $this->dbconnection->prepare($sql);
+				$stmt->execute();
+				$results = $stmt->fetchAll(PDO::FETCH_OBJ);
+				
+				if ($results)
+				return $results;
+				else
+				return FALSE;
+			} catch (PDOException $e) {
+				echo $e->getMessage();
+				return FALSE;
+			}
+
 		}
 	}
 	
-	public function getUserImages($userId){
+	public function getUserImages($userId, $limit = '', $offset = ''){
 
-		$sql = "SELECT * FROM `images` WHERE `author` = ? ORDER BY `creation_date` DESC";
-		try {
-			$stmt = $this->dbconnection->prepare($sql);
-			$stmt->execute([$userId]);
-			$results = $stmt->fetchAll(PDO::FETCH_OBJ);
 
-			if ($results)
+		if (empty($limit) || empty($offset)){
+			$sql = "SELECT * FROM `images` WHERE `author` = ? ORDER BY `creation_date` DESC";
+			try {
+				$stmt = $this->dbconnection->prepare($sql);
+				$stmt->execute([$userId]);
+				$results = $stmt->fetchAll(PDO::FETCH_OBJ);
+				
+				if ($results)
 				return $results;
-			else
+				else
 				return FALSE;
-		} catch (PDOException $e) {
-			echo $e->getMessage();
-			return FALSE;
+			} catch (PDOException $e) {
+				echo $e->getMessage();
+				return FALSE;
+			}
+		} else {
+			
+			if ($offset == "zero") $offset = 0;
+			
+			$sql = "SELECT * FROM `images` WHERE `author` = ? ORDER BY `creation_date` DESC LIMIT $limit OFFSET $offset";
+			try {
+				$stmt = $this->dbconnection->prepare($sql);
+				$stmt->execute([$userId]);
+				$results = $stmt->fetchAll(PDO::FETCH_OBJ);
+				
+				if ($results)
+				return $results;
+				else
+				return FALSE;
+			} catch (PDOException $e) {
+				echo $e->getMessage();
+				return FALSE;
+			}
+
 		}
 	}
 
@@ -188,7 +231,20 @@ class imagesModel
 		return count($comments);
 	}
 
+	function deletePost($imageId){
+		
+		try {
+			$sql = "DELETE FROM `images` WHERE `images`.`id` = ?";
+			$stmt = $this->dbconnection->prepare($sql);
+			$stmt->execute([$imageId]);
+			return TRUE;
+		} catch (PDOException $e) {
+			echo $e->getMessage();
+			return FALSE;
+		}
+		return FALSE;
 
+	}
     
 }
 ?>

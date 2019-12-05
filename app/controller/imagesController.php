@@ -27,11 +27,16 @@ class imagesController extends Controller{
     public function image($imageId){
         if ($imageId){
             $image = $this->model->getImage($imageId);
-            $authorName = $this->user->get_user($image->author)->username;
-            $username = $this->user->get_user($_SESSION["user_id"])->username;
-            $liked = $this->model->liked($imageId, $username);
-
-            $this->view = $this->view("images/image", [$image, $authorName, $liked]);
+            if ($image){
+                $authorName = $this->user->get_user($image->author)->username;
+                $username = $this->user->get_user($_SESSION["user_id"])->username;
+                $liked = $this->model->liked($imageId, $username);
+    
+                $this->view = $this->view("images/image", [$image, $authorName, $liked]);
+            } else{
+                $this->view = $this->view("images/imagenotfound");
+                
+            }
             $this->view->render();
         }
     }
@@ -45,9 +50,12 @@ class imagesController extends Controller{
 
             $imageId = $srcURI[count($srcURI) - 1];
             
-            
+            $image = $this->model->getImage($imageId);
+            $imageAuthor = $this->user->get_user($image->author);
             $username = $this->user->get_user($_SESSION["user_id"])->username;
             $results = $this->model->like($imageId, $username);
+            
+            $this->sendLikeNotification($imageAuthor->email , $username);
             
             echo $results;
         }
@@ -63,11 +71,17 @@ class imagesController extends Controller{
             $username = $this->user->get_user($_SESSION["user_id"])->username;
             $imageId = $srcURI[count($srcURI) - 1];
 
-            $commentText = base64_encode($commentText);
-            $comment = Array($username=>$commentText);
+            $encodedcommentText = base64_encode($commentText);
+            $comment = Array($username=>$encodedcommentText);
 
             
             $results = $this->model->comment($imageId, $comment);
+
+            $image = $this->model->getImage($imageId);
+            $imageAuthor = $this->user->get_user($image->author);
+            $username = $this->user->get_user($_SESSION["user_id"])->username;
+
+            $this->sendCommentNotification($imageAuthor->email, $username, $commentText);
             
             //$results = $this->model->comment($imageId, $comment);
             
@@ -242,6 +256,18 @@ class imagesController extends Controller{
         
     }
 
+    public function deletePost($imageId = ''){
+        echo "Whaalaaa! $imageId deleted";
+        if(!empty($imageId)){
+
+            $image = $this->model->getImage($imageId);
+            if ($image->author == $_SESSION["user_id"]){
+                unlink($image->location);
+                $this->model->deletePost($imageId);
+            }
+        }
+    }
+
     public function delete($imageDir, $imageName){
     //    echo '<br />--------'.__METHOD__.'--------<br >';
 
@@ -250,6 +276,36 @@ class imagesController extends Controller{
         $filename = $imageDir . "/" . $imageName;
         unlink($filename);
         echo $filename;
+    }
+
+    public function sendLikeNotification($imageAuthorEmail, $likerUserName){
+    //    echo '<br />--------'.__METHOD__.'--------<br >';
+
+        $message = "$likerUserName liked your image";
+        $headers = array(
+            'From: noreply'
+        );
+        
+        mail($imageAuthorEmail, "Like Notification", $message, implode("\r\n", $headers));
+       
+    }
+    
+    public function sendCommentNotification($imageAuthorEmail, $commenterUserName, $comment){
+    //    echo '<br />--------'.__METHOD__.'--------<br >';
+
+        $message = "$commenterUserName commented on your image. comment: \"$comment\"";
+        $headers = array(
+            'From: noreply'
+        );
+        
+        mail($imageAuthorEmail, "Comment Notification", $message, implode("\r\n", $headers));
+       
+    }
+    
+    public function generate_code(){
+
+    $this->verification_code = uniqid();
+    $this->model->addVerificationCodebyEmail($this->email, $this->verification_code);
     }
 
 

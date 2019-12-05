@@ -4,7 +4,7 @@ var comment = document.getElementById("comment-text");
 var send = document.getElementById("send-comment");
 var deletePost = document.getElementById("delete-post");
 
-console.log(deletePost);
+console.log(deletePost.className);
 send.addEventListener("click", sendComment);
 like.addEventListener("click", sendLike);
 deletePost.addEventListener("click", deleteImage);
@@ -102,5 +102,20 @@ function updateComments(x){
 }
 
 function deleteImage(x){
-    console.log("delete me");
+    console.log("delete image" + deletePost.className);
+    var srcURI = x.srcElement.baseURI;
+    var pageContents = document.getElementsByClassName("contents");
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+            pageContents[0].innerHTML = "Post deleted";
+            
+        }
+    };
+    xhttp.open("POST", "/images/deletePost/" + deletePost.className, true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("image=" + srcURI);
+
 }
