@@ -201,11 +201,38 @@ function deleteImage(action){
 }
 
 
-var uploadImageForm = document.getElementById("upload-image");
 var uploadImage = document.getElementById("upload-image");
 
-uploadImage.set
+uploadImage.addEventListener("change", uploadUploadedImage);
 
+function uploadUploadedImage(x){
+  var formData = new FormData();
+
+  var file = this.files[0];
+  if (file){
+
+    formData.append("file", file);
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+            displayUploadedImage(this.responseText);
+        }
+    };
+    xhttp.open("POST", "/images/dcodeUploads", true);
+    
+    xhttp.send(formData);
+  }
+}
+
+function displayUploadedImage(image){
+  var imgsrc = "/" + image;
+  var img = document.getElementById("upoaded-image-preview");
+
+ console.log(img);
+ img.src = imgsrc;
+}
 
 
 

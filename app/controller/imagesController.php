@@ -185,6 +185,15 @@ class imagesController extends Controller{
 		$this->view->render();
     }
 
+    public function dcodeUploads(){
+    //    echo '<br />--------'.__METHOD__.'--------<br />';
+
+        $fileTmpName = $_FILES["file"]["tmp_name"];
+       // var_dump($fileTmpName);
+        $filename = 'temp_uploads/'.uniqid('img-').'.png';
+        move_uploaded_file($fileTmpName, $filename);
+        echo $filename;
+    }
     public function dcode(){
     //    echo '<br />--------'.__METHOD__.'--------<br />';
 
