@@ -74,6 +74,7 @@ class userController extends Controller{
 
         if (!$user->verified){
             $this->view = $this->view('user/notverified');
+            $_SESSION['user_id'] = '';
             $this->view->render();
             die();
         }
