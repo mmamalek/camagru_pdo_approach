@@ -16,8 +16,13 @@
 	<div id="sticker1-preview"><img width="150"/></div>
 	<div id="sticker2-preview"><img width="150"/></div>
 
-	<video id="video" >Something went wrong</video>
-	<button id="start-button">start</button>
+	<form id="upload-image" action="upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" id="image" accept="image/*" required /><br />
+    <!-- <input type="submit" name="submit" value="Edit" /> -->
+
+	</form>
+	
+	<video id="video" autoplay>Something went wrong</video>
     <div class="capture-button">
         <button id="snap">Capture</button>
     </div>

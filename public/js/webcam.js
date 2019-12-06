@@ -3,7 +3,7 @@
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const capture = document.getElementById("snap");
-const errorMsgElement = document.querySelector('span#errorMsg');
+
 
 const constraints = {
   audio: false,
@@ -16,36 +16,33 @@ const constraints = {
 
 
 
-// // Access webcam
-// async function init() {
-//   console.log("initializing camera");
-//   try {
-//     const stream = await navigator.mediaDevices.getUserMedia(constraints);
-//     // const stream = navigator.mediaDevices.getUserMedia(constraints);
-//     // console.log("init success");
-//     // console.log(stream);
-//     window.stream = stream;
-//     video.srcObject = stream;
-//     // handleSuccess(stream)
-  
-  
-//   } catch (e) {
-//     errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
-//   }
-// }
+// Access webcam
+async function init() {
+  console.log("initializing camera");
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
 
-// //Success
-// function handleSuccess(stream) {
-//   console.log("init success");
-//   console.log(stream);
-//   window.stream = stream;
-//   video.srcObject = stream;
-//  // video.src = stream;
-//   //video.play();
-// }
 
-// //Load init
-// init();
+     handleSuccess(stream)
+
+  
+  } catch (e) {
+    
+  }
+}
+
+//Success
+function handleSuccess(stream) {
+  console.log("init success");
+  console.log(stream);
+  window.stream = stream;
+  video.srcObject = stream;
+ // video.src = stream;
+  //video.play();
+}
+
+//Load init
+init();
 
 // Draw image
 var context = canvas.getContext('2d');
@@ -204,7 +201,10 @@ function deleteImage(action){
 }
 
 
+var uploadImageForm = document.getElementById("upload-image");
+var uploadImage = document.getElementById("upload-image");
 
+uploadImage.set
 
 
 

@@ -55,7 +55,11 @@ class imagesController extends Controller{
             $username = $this->user->get_user($_SESSION["user_id"])->username;
             $results = $this->model->like($imageId, $username);
             
-            $this->sendLikeNotification($imageAuthor->email , $username);
+            if($this->model->liked($imageId, $username)){
+                $this->sendLikeNotification($imageAuthor->email , $username);
+            } else{
+                $this->sendUnlikeNotification($imageAuthor->email , $username);
+            }
             
             echo $results;
         }
@@ -112,9 +116,11 @@ class imagesController extends Controller{
 
         if (!empty($_SESSION["user_id"]) ){
 
-            $srcURI = explode("/", $_POST["image"]);
+            if(empty($imageId)){
+                $srcURI = explode("/", $_POST["image"]);
+                $imageId = $srcURI[count($srcURI) - 1];
+            }
 
-            $imageId = $srcURI[count($srcURI) - 1];
             $username = $this->user->get_user($_SESSION["user_id"])->username;
             $results = $this->model->liked($imageId, $username);
 
@@ -231,6 +237,8 @@ class imagesController extends Controller{
         $src_h = imagesy($src);
         imagecopyresampled($dest, $src, $dest_x, $dest_y, 0, 0, 100, 100, $src_w, $src_h);
         imagepng($dest, $filename);
+        imagedestroy($dest);
+        imagedestroy($src);
     }
 
     public function save($imageDir, $imageName){
@@ -284,6 +292,18 @@ class imagesController extends Controller{
         $message = "$likerUserName liked your image";
         $headers = array(
             'From: noreply'
+        );
+        
+        mail($imageAuthorEmail, "Like Notification", $message, implode("\r\n", $headers));
+       
+    }
+
+    public function sendUnlikeNotification($imageAuthorEmail, $likerUserName){
+    //    echo '<br />--------'.__METHOD__.'--------<br >';
+
+        $message = "<strong>$likerUserName</strong> decided to take back his / her like. Sorry.";
+        $headers = array(
+            'From: noreply', "To: $imageAuthorEmail"
         );
         
         mail($imageAuthorEmail, "Like Notification", $message, implode("\r\n", $headers));
