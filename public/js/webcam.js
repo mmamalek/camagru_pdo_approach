@@ -3,7 +3,7 @@
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const capture = document.getElementById("snap");
-const errorMsgElement = document.querySelector('span#errorMsg');
+
 
 const constraints = {
   audio: false,
@@ -16,36 +16,33 @@ const constraints = {
 
 
 
-// // Access webcam
-// async function init() {
-//   console.log("initializing camera");
-//   try {
-//     const stream = await navigator.mediaDevices.getUserMedia(constraints);
-//     // const stream = navigator.mediaDevices.getUserMedia(constraints);
-//     // console.log("init success");
-//     // console.log(stream);
-//     window.stream = stream;
-//     video.srcObject = stream;
-//     // handleSuccess(stream)
-  
-  
-//   } catch (e) {
-//     errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
-//   }
-// }
+// Access webcam
+async function init() {
+  console.log("initializing camera");
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
 
-// //Success
-// function handleSuccess(stream) {
-//   console.log("init success");
-//   console.log(stream);
-//   window.stream = stream;
-//   video.srcObject = stream;
-//  // video.src = stream;
-//   //video.play();
-// }
 
-// //Load init
-// init();
+     handleSuccess(stream)
+
+  
+  } catch (e) {
+    
+  }
+}
+
+//Success
+function handleSuccess(stream) {
+  console.log("init success");
+  console.log(stream);
+  window.stream = stream;
+  video.srcObject = stream;
+ // video.src = stream;
+  //video.play();
+}
+
+//Load init
+init();
 
 // Draw image
 var context = canvas.getContext('2d');
@@ -204,8 +201,38 @@ function deleteImage(action){
 }
 
 
+var uploadImage = document.getElementById("upload-image");
 
+uploadImage.addEventListener("change", uploadUploadedImage);
 
+function uploadUploadedImage(x){
+  var formData = new FormData();
+
+  var file = this.files[0];
+  if (file){
+
+    formData.append("file", file);
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+            displayUploadedImage(this.responseText);
+        }
+    };
+    xhttp.open("POST", "/images/dcodeUploads", true);
+    
+    xhttp.send(formData);
+  }
+}
+
+function displayUploadedImage(image){
+  var imgsrc = "/" + image;
+  var img = document.getElementById("upoaded-image-preview");
+
+ console.log(img);
+ img.src = imgsrc;
+}
 
 
 

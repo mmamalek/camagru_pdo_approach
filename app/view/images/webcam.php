@@ -16,8 +16,13 @@
 	<div id="sticker1-preview"><img width="150"/></div>
 	<div id="sticker2-preview"><img width="150"/></div>
 
-	<video id="video" >Something went wrong</video>
-	<button id="start-button">start</button>
+
+        <input type="file" name="image" id="upload-image" accept="image/*" /><br />
+
+
+	</form>
+	<img src="" id="upoaded-image-preview" />
+	<video id="video" autoplay>Something went wrong</video>
     <div class="capture-button">
         <button id="snap">Capture</button>
     </div>

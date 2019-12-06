@@ -40,25 +40,29 @@ class homeController extends Controller{
     
     public function myalbum($pageNo = 1){
 
+        if(empty($_SESSION["user_id"])){
+            header("Location: /user/login");
+            die();
+        }
         $limit = 5;
         $offset = ($pageNo - 1 ) * $limit;
         $total = count($this->model->getUserImages($_SESSION["user_id"]));
 
         if($offset == 0){$offset = "zero";}
+
         
-        
-        $images = $this->model->getUserImages($limit, $offset);
+        $images = $this->model->getUserImages($_SESSION["user_id"],$limit, $offset);
         if($images){
-        $this->view = $this->view("home/album", [$images, $offset, $total, $pageNo]);
+            $this->view = $this->view("home/gallery", [$images, $offset, $total, $pageNo]);
         }
         else{
             $this->view = $this->view("error/pagenotfound");
         }
-        
+
         
         $this->view->render();
-        die();
 
+        die();
     }
 
 

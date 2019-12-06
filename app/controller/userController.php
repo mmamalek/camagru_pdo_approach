@@ -84,6 +84,7 @@ class userController extends Controller{
     }
 
 
+
     public function logout(){
 
         $_SESSION['user_id'] = NULL;
