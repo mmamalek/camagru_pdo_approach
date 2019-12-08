@@ -2,7 +2,7 @@
 
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
-const capture = document.getElementById("snap");
+const capture = document.getElementById("capture-image");
 
 
 const constraints = {
@@ -33,16 +33,13 @@ async function init() {
 
 //Success
 function handleSuccess(stream) {
-  console.log("init success");
-  console.log(stream);
   window.stream = stream;
   video.srcObject = stream;
- // video.src = stream;
-  //video.play();
+  video.onplay();
 }
 
 //Load init
-init();
+//init();
 
 // Draw image
 var context = canvas.getContext('2d');
@@ -53,27 +50,34 @@ capture.addEventListener("click", function() {
 
 
 document.getElementById("sticker1").addEventListener("click", function() {
-  stickersLivePreview()
+
+  stickersLivePreview();
 });
 document.getElementById("sticker2").addEventListener("click", function() {
-  stickersLivePreview()
+  document.getElementById("s2");
+  stickersLivePreview();
 });
 document.getElementById("sticker3").addEventListener("click", function() {
-  stickersLivePreview()
+  document.getElementById("s3");
+  stickersLivePreview();
 });
 
 function stickersLivePreview()
 {
+  
   var stickers = document.getElementsByName("sticker");
+  var stc = document.getElementsByClassName("st");
     var i = 0;
     while(stickers[i]){
       if (stickers[i].checked){
-        document.getElementById("sticker" + i  + "-preview").style.visibility = "visible";
-        document.getElementById("sticker" + i  + "-preview").firstChild.src= "/sticker/sticker"+i+".png"; 
+       // document.getElementById("sticker" + i  + "-preview").style.visibility = "visible";
+      //  document.getElementById("sticker" + i  + "-preview").firstChild.src= "/sticker/sticker"+i+".png";
+        stc[i].style.border = "solid purple 3px";
       }
       else{
-        document.getElementById("sticker" + i + "-preview").style.visibility = "hidden";
-        document.getElementById("sticker" + i + "-preview").firstChild.src = "";
+      //  document.getElementById("sticker" + i + "-preview").style.visibility = "hidden";
+      //  document.getElementById("sticker" + i + "-preview").firstChild.src = "";
+        stc[i].style.border = "none";
       }
       i++;
     }
@@ -138,7 +142,8 @@ function addImageToPage(imageURL){
     imagePreview.appendChild(image);
     imagePreview.appendChild(saveButton);
     imagePreview.appendChild(deleteButton);
-    preview.appendChild(imagePreview);
+//    preview.appendChild(imagePreview);
+    preview.prepend(imagePreview);
 }
 
 function setActionListeners(){
@@ -202,8 +207,10 @@ function deleteImage(action){
 
 
 var uploadImage = document.getElementById("upload-image");
+var img = document.getElementById("upoaded-image-preview");
 
 uploadImage.addEventListener("change", uploadUploadedImage);
+uploadImage.style.display = "none";
 
 function uploadUploadedImage(x){
   var formData = new FormData();
@@ -228,13 +235,25 @@ function uploadUploadedImage(x){
 
 function displayUploadedImage(image){
   var imgsrc = "/" + image;
-  var img = document.getElementById("upoaded-image-preview");
-
- console.log(img);
  img.src = imgsrc;
 }
 
+var startCamera = document.getElementById("start-camera-button");
+startCamera.addEventListener("click", function (){
+  img.src = "";
+  init();
 
+});
+
+document.getElementById("choose-image").addEventListener("click", function (){
+  video.srcObject = null;
+  video.width = 0;
+  video.height = 0;
+  img.style.maxHeight = "100%";
+  uploadImage.click();
+  console.log("world");
+
+});
 
 
 

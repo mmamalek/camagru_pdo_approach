@@ -1,6 +1,6 @@
 <div class="form">
         <h1>Sign Up</h1>
-<form  action="register" method="POST">
+<form  action="register" method="POST" id="form">
     <div class="form-input">
         <label for="username">Username</label>
         <input type="text" placeholder="username" name="username" id="username" required/>
@@ -24,4 +24,5 @@
     <input type="submit" name="submit" value="Register" />
 </form>
 already a user? <a href="/user/login">log in</a>
+<script src="/public/js/registration_validator.js"></script>
 </div>

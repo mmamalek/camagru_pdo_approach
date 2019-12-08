@@ -150,6 +150,26 @@ class userModel
 			return FALSE;
 		}
 	}
+	
+	public function user_id_password($id, $password)
+	{
+	//	echo '<br />-----' . __METHOD__ . '----<br />';
+
+		try {
+			$sql = "SELECT * FROM `users` WHERE `id` = ? && `passwd` = ?";
+			$stmt = $this->dbconnection->prepare($sql);
+			$stmt->execute([$id, $password]);
+			$results = $stmt->fetch(PDO::FETCH_OBJ);
+
+			if ($results)
+				return $results;
+			else
+				return FALSE;
+		} catch (PDOException $e) {
+			echo $e->getMessage();
+			return FALSE;
+		}
+	}
 
 	public function email_password($email, $password)
 	{
@@ -173,15 +193,11 @@ class userModel
 
 	public function add_user($username, $email, $password, $verification_code)
 	{
-	//	echo '<br />-----' . __METHOD__ . '----<br />';
-
 		try {
 			$sql = 'INSERT INTO users (username, passwd, email, verification_code) VALUES (?, ?, ?, ?)';
 			$stmt = $this->dbconnection->prepare($sql);
 			$stmt->execute([$username, $password, $email, $verification_code]);
-			echo 'seccessfull <br />';
 
-			
 			return $this->username(($username));
 		} catch (PDOException $e) {
 			echo $e->getMessage();
@@ -191,8 +207,6 @@ class userModel
 
 	public function delete_user($id)
 	{
-	//	echo '<br />-----' . __METHOD__ . '----<br />';
-
 		try {
 
 			$sql = "DELETE FROM `users` WHERE `users`.`id` =  ?";
@@ -208,8 +222,6 @@ class userModel
 
 	public function verify($code)
 	{
-	//	echo '<br />-----' . __METHOD__ . '----<br />';
-
 		try {
 			$sql = "UPDATE `users` SET `verified` = '1' WHERE `verification_code` = ?";
 			$stmt = $this->dbconnection->prepare($sql);
