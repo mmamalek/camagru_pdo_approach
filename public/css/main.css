@@ -138,12 +138,16 @@ input[type="password"]
 .webcam-container{
     display: grid;
     grid-template-columns: 1fr 5fr 2fr;
+    grid-template-rows: minmax(auto, 500px) auto;
+
 }
 #video{
     width: 98%;
 }
 #preview{
     width: 98%;
+    height: 75vh;
+    overflow: auto;
 
 }
 #preview-image{

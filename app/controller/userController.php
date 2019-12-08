@@ -195,16 +195,44 @@ class userController extends Controller{
             }
             $this->generate_code();
             $this->send_reset_email();
-            echo 'test';
         }
         
         $this->view = $this->view('user/forgotpassword');
       
         $this->view->render();
     }
+    
+    public function changepassword(){
+
+        if (empty($_SESSION['user_id']))
+        header('location: user');
+
+        if (!empty($_POST['submit'])){
+            if(!$this->model->user_id_password($_SESSION['user_id'], hash('whirlpool', $_POST['passwd']))){
+                $_POST = [];
+                header("Location: /user/changepassword");
+                die();
+            }
+
+            $this->model->set_password($_SESSION['user_id'], hash('whirlpool', $_POST['passwdnew']));
+            header("Location: /user/profile");
+            die();
+        }
+        
+        $this->view = $this->view('user/resetpassword');
+      
+        $this->view->render();
+    }
 
     public function __destruct(){
     //    echo '<br />--------!'.__CLASS__.'--------<br />';
+    }
+
+    public function setNewPassword(){
+        if ($_POST["passwd"] == $_POST["passwd2"]){
+            $this->model->set_password($_SESSION["forgot_user_id"], hash('whirlpool', $_POST['passwd']));
+            header("Location: /user/login");
+        }
     }
     
     public function filter_inputs(){
@@ -215,10 +243,10 @@ class userController extends Controller{
            
         }
         if ($_POST['submit'] == 'Register'){
-            echo	$this->username = filter_var($_POST['username'], FILTER_SANITIZE_STRIPPED);
-            echo	$this->email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-            echo	$this->password = hash('whirlpool', $_POST['passwd']);
-            echo	$this->password2 = hash('whirlpool', $_POST['passwd2']);
+            $this->username = filter_var($_POST['username'], FILTER_SANITIZE_STRIPPED);
+            $this->email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+            $this->password = hash('whirlpool', $_POST['passwd']);
+            $this->password2 = hash('whirlpool', $_POST['passwd2']);
             
         }
         if ($_POST['submit'] == 'Verify'){
@@ -236,6 +264,7 @@ class userController extends Controller{
 			$this->notifications = ($_POST['notifications'] == 1 ? 1 : 0);
         }
     }
+    
     public function validate_inputs(){
 		
 		if (empty($this->username)){
@@ -292,8 +321,8 @@ class userController extends Controller{
                 'From: noreply'
             );
             
-            mail($this->email, "Verification email", $msg, implode("\r\n", $headers));
-            header('Location: mailsent');       
+            mail($this->email, "Reset Password", $msg, implode("\r\n", $headers));
+            header('Location: passwordmailsent');       
         }
         
         public function generate_code(){
@@ -305,6 +334,12 @@ class userController extends Controller{
     public function mailsent(){
 
             $this->view = $this->view('user/mailsent');
+            $this->view->render();
+    }
+
+    public function passwordmailsent(){
+
+            $this->view = $this->view('user/passwordmailsent');
             $this->view->render();
     }
 

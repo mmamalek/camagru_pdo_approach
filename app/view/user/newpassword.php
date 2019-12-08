@@ -1,7 +1,7 @@
 <div class="contents">
 <h1>New Password</h1>
-<?php var_dump($_SESSION) ?>
-<form  action="#" method="POST">
+
+<form  action="/user/setnewpassword" method="POST">
     <label for="password">New Password</label>
         <input type="password" placeholder="password" name="passwd" id="password" required/><br />
     <label for="password2">Confirm Password</label>
