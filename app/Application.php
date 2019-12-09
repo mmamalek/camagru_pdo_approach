@@ -53,7 +53,7 @@ class Application{
         
     }
     protected function createController(){
-    //    echo '<br /> >>'.__METHOD__.':<br />';
+  
 
         if (file_exists(CONTROLLER.$this->controller.'.php')){
             include(CONTROLLER.$this->controller.'.php');
@@ -61,17 +61,23 @@ class Application{
             $this->controller = $controller;
 
         } else {
-            echo 'error:: Controller not found. <br />';
+          
+            include(VIEW."header.php");
+            include(VIEW."error/pagenotfound.php");
+            include(VIEW."footer.php");
         }
     }
 
     protected function callMethod(){
-    //    echo '<br /> >>'.__METHOD__.':<br />';
+
 
         if (method_exists($this->controller, $this->action)){
             call_user_func_array([$this->controller,$this->action], $this->args);
         } else {
-            echo 'error:: Method not found:<br />';
+     
+            include(VIEW."header.php");
+            include(VIEW."error/pagenotfound.php");
+            include(VIEW."footer.php");
         }
     }
 

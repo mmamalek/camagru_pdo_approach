@@ -43,6 +43,10 @@ body{
     font: 1em sans-serif;
 }
 
+.error{
+    grid-column-start: 2;
+}
+
 .header ul li a:hover{
     border-bottom: 3px solid cornsilk;
 }

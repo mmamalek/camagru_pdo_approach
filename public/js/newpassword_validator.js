@@ -1,43 +1,21 @@
-const username = document.getElementById("username");
-const email = document.getElementById("email");
 const password = document.getElementById("password");
 const password2 = document.getElementById("password2");
-const registrationForm = document.getElementById("form");
+const newPasswordForm = document.getElementById("form");
 
 var green = "#333333";
 var red = "#ff0000";
 
 // Handle form
-registrationForm.addEventListener('submit', function (event) {
+newPasswordForm.addEventListener('submit', function (event) {
 
-
-	if (validateUsername() && validateEmail() && validatePassword() && validateConfirmPassword()) {
+    event.preventDefault();
+    console.log("hi");
+	if (validatePassword() && validateConfirmPassword()) {
 
 	} else{
 		event.preventDefault();
 	}
 });
-
-// Validators
-function validateUsername() {
-	if (empty(username)) {
-		return false;
-	}
-	if (!onlyLettersAndNumbers(username)){
-		return false;
-	}
-	return true;
-}
-
-function validateEmail() {
-	if (empty(email)){
-		return false;
-	}
-	if (!containsCharacters(email, 5)){
-		return false;
-	}
-	return true;
-}
 
 function validatePassword() {
 	if (empty(password)){
@@ -100,15 +78,7 @@ function setValid(field) {
 	field.nextElementSibling.innerHTML = '';
 	field.nextElementSibling.style.color = green;
 }
-function onlyLettersAndNumbers(field) {
-	if (/^[a-zA-Z][a-zA-Z0-9]+$/.test(field.value)) {
-		setValid(field);
-		return true;
-	} else {
-		setInvalid(field, `${field.name} must contain only letters and digits`);
-		return false;
-	}
-}
+
 function meetLength(field, minLength, maxLength) {
 	if (field.value.length >= minLength && field.value.length < maxLength) {
 		setValid(field);

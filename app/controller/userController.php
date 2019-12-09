@@ -144,13 +144,13 @@ class userController extends Controller{
             $this->filter_inputs();
 			
 			if ($this->email != $user->email){
-				if ($this->model->emailExist($this->email) && $this->email == $user->email){
+				if ($this->model->email($this->email)){
 				
 					$_SESSION['edit_error_email'] = 'Email already registered';
 					unset($_POST['submit']);
 				    header('Location: edit');
 				    die();
-				}
+                }
 			}
 			if ($this->username != $user->username){
 				if ($this->model->username($this->username)){
@@ -268,11 +268,11 @@ class userController extends Controller{
     public function validate_inputs(){
 		
 		if (empty($this->username)){
-            echo 'empty username<br />';
+            echo 'username can not be empty<br />';
 		}
 		
 		if (empty($email)){
-            echo 'empty email<br />';
+            echo 'email can not be empty<br />';
         }
     }
     

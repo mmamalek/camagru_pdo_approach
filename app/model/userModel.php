@@ -10,18 +10,13 @@ class userModel
 		$this->connect();
 	}
 
-	protected function connect()
-	{
-	//	echo '<br />-----' . __METHOD__ . '----<br />';
-
+	protected function connect(){
 		require(CONFIG . 'database.php');
 
 		try {
 			$this->dbconnection = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
 			$this->dbconnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-
-	//		echo "database connection Established.<br>";
 		} catch (PDOException $e) {
 			echo $e->getMessage();
 		}
@@ -29,8 +24,6 @@ class userModel
 
 	public function username($username)
 	{
-	//	echo '<br />-----' . __METHOD__ . '----<br />';
-
 		$sql = "SELECT * FROM users WHERE username = ?";
 		try {
 			$stmt = $this->dbconnection->prepare($sql);
@@ -49,8 +42,6 @@ class userModel
 
 	public function get_user($id)
 	{
-	//	echo '<br />-----' . __METHOD__ . '----<br />';
-
 		$sql = "SELECT * FROM `users` WHERE `id` = ?";
 		try {
 			$stmt = $this->dbconnection->prepare($sql);
@@ -70,15 +61,11 @@ class userModel
 
 	public function email($email)
 	{
-	//	echo '<br />-----' . __METHOD__ . '----<br />';
-
 		try {
 			$sql = "SELECT * FROM users WHERE email = ?";
 			$stmt = $this->dbconnection->prepare($sql);
 			$stmt->execute([$email]);
 			$results = $stmt->fetch(PDO::FETCH_OBJ);
-
-
 
 			if ($results)
 				return $results;
@@ -92,8 +79,6 @@ class userModel
 
 	public function username_email($username, $email)
 	{
-	//	echo '<br />-----' . __METHOD__ . '----<br />';
-
 		try {
 			$sql = "SELECT * FROM users WHERE username = ? && email = ?";
 			$stmt = $this->dbconnection->prepare($sql);
@@ -112,8 +97,6 @@ class userModel
 
 	public function verification_code($verificationcode)
 	{
-	//	echo '<br />-----' . __METHOD__ . '----<br />';
-
 		try {
 			$sql = "SELECT * FROM `users` WHERE `verification_code` = ?";
 			$stmt = $this->dbconnection->prepare($sql);
@@ -133,8 +116,6 @@ class userModel
 
 	public function username_password($username, $password)
 	{
-	//	echo '<br />-----' . __METHOD__ . '----<br />';
-
 		try {
 			$sql = "SELECT * FROM `users` WHERE `username` = ? && `passwd` = ?";
 			$stmt = $this->dbconnection->prepare($sql);
@@ -153,8 +134,6 @@ class userModel
 	
 	public function user_id_password($id, $password)
 	{
-	//	echo '<br />-----' . __METHOD__ . '----<br />';
-
 		try {
 			$sql = "SELECT * FROM `users` WHERE `id` = ? && `passwd` = ?";
 			$stmt = $this->dbconnection->prepare($sql);
@@ -173,8 +152,6 @@ class userModel
 
 	public function email_password($email, $password)
 	{
-	//	echo '<br />-----' . __METHOD__ . '----<br />';
-
 		try {
 			$sql = "SELECT * FROM `users` WHERE `email` = ? && `passwd` = ?";
 			$stmt = $this->dbconnection->prepare($sql);
@@ -239,8 +216,6 @@ class userModel
 
 	public function is_verified($id)
 	{
-	//	echo '<br />-----' . __METHOD__ . '----<br />';
-
 		try {
 			$sql = "SELECT * FROM `users` WHERE `id` = ? AND `verified` = TRUE";
 			$stmt = $this->dbconnection->prepare($sql);
@@ -258,8 +233,6 @@ class userModel
 	}
 
 	public function addVerificationCodebyEmail($email, $verification_code){
-//		echo '<br />-----' . __METHOD__ . '----<br />';
-
 		try {
 			$sql = "UPDATE `users` SET `verification_code` = ? WHERE `email` = ?";
 			$stmt = $this->dbconnection->prepare($sql);
@@ -273,8 +246,6 @@ class userModel
 	}
 
 	public function set_password($id, $password){
-	//	echo '<br />-----' . __METHOD__ . '----<br />';
-
 		try {
 			$sql = "UPDATE `users` SET `passwd` = ? WHERE `id` = ?";
 			$stmt = $this->dbconnection->prepare($sql);

@@ -28,6 +28,9 @@ class homeController extends Controller{
         if($images){
             $this->view = $this->view("home/gallery", [$images, $offset, $total, $pageNo]);
         }
+        else if ($pageNo = 1){
+            $this->view = $this->view("error/emptygallery");
+        }
         else{
             $this->view = $this->view("error/pagenotfound");
         }

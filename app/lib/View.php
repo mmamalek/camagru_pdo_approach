@@ -3,14 +3,13 @@ class View{
     protected $viewName;
 
     public function __construct($viewName, $viewData = []){
-    //    echo '<br />--------'.__CLASS__.'--------<br />';
 
         $this->viewName = $viewName;
         $this->$viewData = $viewData;
     }
 
     public function render(){
-    //    echo '<br />--------'.__METHOD__.'--------<br />';
+
 
         include(VIEW . 'header.php');
 

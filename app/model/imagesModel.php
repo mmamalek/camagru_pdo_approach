@@ -12,16 +12,13 @@ class imagesModel
 
 	protected function connect()
 	{
-		//echo '<br />-----' . __METHOD__ . '----<br />';
+
 
 		require(CONFIG . 'database.php');
 
 		try {
 			$this->dbconnection = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
 			$this->dbconnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-
-			//echo "database connection Established.<br>";
 		} catch (PDOException $e) {
 			echo $e->getMessage();
 		}

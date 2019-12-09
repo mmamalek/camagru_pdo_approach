@@ -1,5 +1,6 @@
 <div class="form">
         <h1>Sign Up</h1>
+
 <form  action="register" method="POST" id="form">
     <div class="form-input">
         <label for="username">Username</label>

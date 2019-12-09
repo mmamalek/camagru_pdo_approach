@@ -16,7 +16,7 @@ class imagesController extends Controller{
     }
 
     public function index(){
-       // echo '<br />--------'.__METHOD__.'--------<br />';
+      
 
         header('Location: images/upload');
         die();
@@ -52,15 +52,15 @@ class imagesController extends Controller{
             
             $image = $this->model->getImage($imageId);
             $imageAuthor = $this->user->get_user($image->author);
-            $user = $this->user->get_user($_SESSION["user_id"]);
-            $results = $this->model->like($imageId, $user->username);
+            $username = $this->user->get_user($_SESSION["user_id"])->username;
+            $results = $this->model->like($imageId, $username);
             
-            if ($user->notifications){
+            if ($imageAuthor->notifications){
 
-                if($this->model->liked($imageId, $user->username)){
-                    $this->sendLikeNotification($imageAuthor->email , $user->username);
+                if($this->model->liked($imageId, $username)){
+                    $this->sendLikeNotification($imageAuthor->email , $username);
                 } else{
-                    $this->sendUnlikeNotification($imageAuthor->email , $user->username);
+                    $this->sendUnlikeNotification($imageAuthor->email , $username);
                 }
             }
                 
@@ -81,18 +81,18 @@ class imagesController extends Controller{
             $encodedcommentText = base64_encode($commentText);
             $comment = Array($username=>$encodedcommentText);
 
-            if ($this->user->get_user($_SESSION["user_id"])->notifications){
+            
+        
                 $results = $this->model->comment($imageId, $comment);
-            }
+        }
 
             $image = $this->model->getImage($imageId);
             $imageAuthor = $this->user->get_user($image->author);
             $username = $this->user->get_user($_SESSION["user_id"])->username;
 
-            $this->sendCommentNotification($imageAuthor->email, $username, $commentText);
-            
-
-        }
+            if ($imageAuthor->notifications){
+                $this->sendCommentNotification($imageAuthor->email, $username, $commentText);
+            }
     }
     
     public function getComments($imageId = ""){
@@ -155,7 +155,7 @@ class imagesController extends Controller{
     }
 
     public function webcam(){
-        //echo '<br />--------'.__METHOD__.'--------<br />';
+   
 
         if (empty($_SESSION['user_id'])){
             header('Location: /user/login');
@@ -167,7 +167,7 @@ class imagesController extends Controller{
     }
 
     public function camera(){
-    //    echo '<br />--------'.__METHOD__.'--------<br />';
+
 
         if (empty($_SESSION['loggedinId'])){
             header('Location: unauthorised');
@@ -198,9 +198,6 @@ class imagesController extends Controller{
     }
 
     public function dcode(){
-    //    echo '<br />--------'.__METHOD__.'--------<br />';
-
-    
 
         $base64img = $_POST["image"];
         $base64img = explode(",", $_POST["image"])[1];
@@ -213,9 +210,7 @@ class imagesController extends Controller{
         $filename = 'temp_uploads/'.uniqid('img-').'.png';
         file_put_contents($filename,$imageData);
         
-       // $stickerNo = "2";
-        //$this->addSticker($filename, $stickerNo);
-        
+
         $stickers = explode(",", $_POST["stickers"]);
         unset($stickers[0]);
 
@@ -223,7 +218,7 @@ class imagesController extends Controller{
             $this->addSticker($filename, $sticker);
         
         }
- 
+        echo $filename;
     }
 
     public function addSticker($filename, $stickerNo){
@@ -261,9 +256,9 @@ class imagesController extends Controller{
 
         if(file_exists($src)){
             rename($src, $dest);
-            echo "moved";
+ 
         } else {
-            echo "not exist";
+//
         }
 
         $this->model->addImage($dest);
@@ -271,7 +266,7 @@ class imagesController extends Controller{
     }
 
     public function deletePost($imageId = ''){
-        echo "Whaalaaa! $imageId deleted";
+ 
         if(!empty($imageId)){
 
             $image = $this->model->getImage($imageId);
@@ -283,17 +278,13 @@ class imagesController extends Controller{
     }
 
     public function delete($imageDir, $imageName){
-    //    echo '<br />--------'.__METHOD__.'--------<br >';
-
-     
 
         $filename = $imageDir . "/" . $imageName;
         unlink($filename);
-        echo $filename;
+
     }
 
     public function sendLikeNotification($imageAuthorEmail, $likerUserName){
-    //    echo '<br />--------'.__METHOD__.'--------<br >';
 
         $message = "$likerUserName liked your image";
         $headers = array(
@@ -305,7 +296,7 @@ class imagesController extends Controller{
     }
 
     public function sendUnlikeNotification($imageAuthorEmail, $likerUserName){
-    //    echo '<br />--------'.__METHOD__.'--------<br >';
+ 
 
         $message = "<strong>$likerUserName</strong> decided to take back his / her like. Sorry.";
         $headers = array(
@@ -317,15 +308,13 @@ class imagesController extends Controller{
     }
     
     public function sendCommentNotification($imageAuthorEmail, $commenterUserName, $comment){
-    //    echo '<br />--------'.__METHOD__.'--------<br >';
 
         $message = "$commenterUserName commented on your image. comment: \"$comment\"";
         $headers = array(
             'From: noreply'
         );
         
-        mail($imageAuthorEmail, "Comment Notification", $message, implode("\r\n", $headers));
-       
+        mail($imageAuthorEmail, "Comment Notification", $message, implode("\r\n", $headers)); 
     }
     
     public function generate_code(){
@@ -333,8 +322,6 @@ class imagesController extends Controller{
     $this->verification_code = uniqid();
     $this->model->addVerificationCodebyEmail($this->email, $this->verification_code);
     }
-
-
 
     public function __destruct(){
         //echo '<br />--------!'.__CLASS__.'--------<br />';
