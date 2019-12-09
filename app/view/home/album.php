@@ -27,7 +27,6 @@ if ($max > $total) $max = $total;
         echo "<img src='/$image->location' class='gallery-image' />";
         echo "<span class='gallery-image-likes' >" . $likes . (($likes == 1) ? " like" : " likes") .  "</span>";
         echo "<span class='gallery-image-comments' >" . $comments . (($comments == 1) ? " comment" : " comments") .  "</span>";
-       // var_dump($image->location);
         echo "</div>";
         echo "</a>";
     }

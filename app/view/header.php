@@ -19,6 +19,7 @@ $login = (empty($_SESSION["user_id"]) ? "login" : "logout");
             <li><a href="/images/webcam">Camera</a></li>
             <?php echo (($login == "logout") ? '<li><a href="/home/myalbum">My Album</a></li>' : '' ); ?>
             <?php echo (($login == "logout") ? '<li><a href="/user/profile">profile</a></li>' : '' ); ?>
+            <?php echo (($login == "login") ? '<li><a href="/user/register">register</a></li>' : '' ); ?>
             <li><?php echo "<a href='/user/$login' >$login </a>"; ?></li>
         </ul>
     </div>

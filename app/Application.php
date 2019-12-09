@@ -6,7 +6,7 @@ class Application{
     protected $args;
 
     public function __construct(){
-    //    echo '<br />--------'.__CLASS__.'--------<br />';
+  
 
         $this->processInputs();
         //$this->printInputs();
@@ -15,7 +15,7 @@ class Application{
     }
 
     protected function processInputs(){
-    //    echo '<br /> >>'.__METHOD__.':<br />';
+
 
         $input = trim($_SERVER["REQUEST_URI"], '/');
         $input = explode('/', $input);
@@ -42,7 +42,7 @@ class Application{
     }
 
     protected function printInputs(){
-    //    echo '<br /> >>'.__METHOD__.':<br />';
+
 
         echo 'Controler : '.$this->controller.'<br />';
         echo 'Action    : '.$this->action.'<br />';

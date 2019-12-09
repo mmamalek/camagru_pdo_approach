@@ -52,15 +52,18 @@ class imagesController extends Controller{
             
             $image = $this->model->getImage($imageId);
             $imageAuthor = $this->user->get_user($image->author);
-            $username = $this->user->get_user($_SESSION["user_id"])->username;
-            $results = $this->model->like($imageId, $username);
+            $user = $this->user->get_user($_SESSION["user_id"]);
+            $results = $this->model->like($imageId, $user->username);
             
-            if($this->model->liked($imageId, $username)){
-                $this->sendLikeNotification($imageAuthor->email , $username);
-            } else{
-                $this->sendUnlikeNotification($imageAuthor->email , $username);
+            if ($user->notifications){
+
+                if($this->model->liked($imageId, $user->username)){
+                    $this->sendLikeNotification($imageAuthor->email , $user->username);
+                } else{
+                    $this->sendUnlikeNotification($imageAuthor->email , $user->username);
+                }
             }
-            
+                
             echo $results;
         }
     }
@@ -71,15 +74,16 @@ class imagesController extends Controller{
 
             
             $srcURI = explode("/", $_POST["image"]);
-            $commentText = $_POST["comment"];
+            $commentText = filter_var($_POST['comment'], FILTER_SANITIZE_STRIPPED);
             $username = $this->user->get_user($_SESSION["user_id"])->username;
             $imageId = $srcURI[count($srcURI) - 1];
 
             $encodedcommentText = base64_encode($commentText);
             $comment = Array($username=>$encodedcommentText);
 
-            
-            $results = $this->model->comment($imageId, $comment);
+            if ($this->user->get_user($_SESSION["user_id"])->notifications){
+                $results = $this->model->comment($imageId, $comment);
+            }
 
             $image = $this->model->getImage($imageId);
             $imageAuthor = $this->user->get_user($image->author);
@@ -87,9 +91,7 @@ class imagesController extends Controller{
 
             $this->sendCommentNotification($imageAuthor->email, $username, $commentText);
             
-            //$results = $this->model->comment($imageId, $comment);
-            
-            var_dump($results);
+
         }
     }
     
@@ -131,28 +133,27 @@ class imagesController extends Controller{
 
 
     public function upload(){
-       // echo '<br />--------'.__METHOD__.'--------<br />';
 
-        if (empty($_SESSION['user_id'])){
-            header('Location: /user/login');
-        }
-        if (!empty($_POST['submit'])){
-            $file = $_FILES["image"];
-           
-            $fileTmpName = $file ["tmp_name"];
+
+     
+       $img = explode("/", $_POST["image"]);
+       $imageName = $img[count($img) - 2] . "/" . $img[count($img) - 1];
+
+       $filename = 'temp_uploads/'.uniqid('img-').'.png';
+       copy($imageName, $filename);
        
+       
+       $stickers = explode(",", $_POST["stickers"]);
+       unset($stickers[0]);
 
-            $newname = 'uploads/'.uniqid('img-').'.jpg';
-            move_uploaded_file($fileTmpName, $newname);
-
-            $this->model->addImage($newname);
-            echo 'success';
-
-        }
-        $this->view = $this->view('images/upload');
-        $this->view->render();
+       foreach($stickers as $sticker){
+           $this->addSticker($filename, $sticker);
+    
+       }
+       echo $filename;
 
     }
+
     public function webcam(){
         //echo '<br />--------'.__METHOD__.'--------<br />';
 
@@ -162,15 +163,6 @@ class imagesController extends Controller{
         
         $this->view = $this->view('images/webcam');
         $this->view->render();
-
-    }
-
-    public function edit(){
-        echo '<br />--------'.__METHOD__.'--------<br />';
-
-        if (empty($_SESSION['loggedinId'])){
-            header('Location: unauthorised');
-        }
 
     }
 
@@ -186,14 +178,25 @@ class imagesController extends Controller{
     }
 
     public function dcodeUploads(){
-    //    echo '<br />--------'.__METHOD__.'--------<br />';
+
 
         $fileTmpName = $_FILES["file"]["tmp_name"];
-       // var_dump($fileTmpName);
+ 
         $filename = 'temp_uploads/'.uniqid('img-').'.png';
-        move_uploaded_file($fileTmpName, $filename);
+    
+        
+        if ($_FILES["file"]["type"] == "image/png" ){
+            move_uploaded_file($fileTmpName, $filename);
+        } else {
+            $imageString = file_get_contents($fileTmpName);
+            $imageData = imagecreatefromstring($imageString);
+            imagepng($imageData, $filename);
+
+        }
+
         echo $filename;
     }
+
     public function dcode(){
     //    echo '<br />--------'.__METHOD__.'--------<br />';
 
@@ -218,9 +221,9 @@ class imagesController extends Controller{
 
         foreach($stickers as $sticker){
             $this->addSticker($filename, $sticker);
-           // echo "console.log($sticker)";
+        
         }
-        echo $filename;
+ 
     }
 
     public function addSticker($filename, $stickerNo){
@@ -262,12 +265,6 @@ class imagesController extends Controller{
         } else {
             echo "not exist";
         }
-
-     
-
-        echo $src . " -> " . $dest . "\n";
-    
- 
 
         $this->model->addImage($dest);
         

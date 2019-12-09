@@ -187,3 +187,8 @@ input[name="sticker"]{
 .paging-button{
     margin: 10px 10px;
 }
+
+#image-page-image{
+    max-width: 70vw;
+    max-height: 60vh;
+}

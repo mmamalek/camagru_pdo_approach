@@ -4,13 +4,13 @@ var comment = document.getElementById("comment-text");
 var send = document.getElementById("send-comment");
 var deletePost = document.getElementById("delete-post");
 
-console.log(deletePost.className);
+
 send.addEventListener("click", sendComment);
 like.addEventListener("click", sendLike);
 deletePost.addEventListener("click", deleteImage);
 
 function sendComment(x){
-    console.log(comment.value);
+   
 
     var srcURI = x.srcElement.baseURI;
 
@@ -19,7 +19,7 @@ function sendComment(x){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
+            
             window.getComments(x);
         }
     };
@@ -40,9 +40,9 @@ function getComments(x){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
+            
             commentsBlock.innerHTML = this.responseText;
-            //return (this.responseText);
+         
         }
     };
     xhttp.open("POST", "/images/getComments", true);
@@ -60,7 +60,7 @@ function sendLike(x){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            //console.log(this.responseText);
+           
             var likes = document.getElementById("likes-count");
             likes.innerHTML = this.responseText;
             updateLikeButton(x);
@@ -80,7 +80,7 @@ function updateLikeButton(x){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
+          
             if (this.responseText){
                 like.innerHTML = "unlike";
             } else {
@@ -98,18 +98,18 @@ function updateLikeButton(x){
 function updateComments(x){
     var comments = getComments(x);
     var commentsBlock = document.getElementById("comments-block");
-    console.log(comments);
+  
 }
 
 function deleteImage(x){
-    console.log("delete image" + deletePost.className);
+
     var srcURI = x.srcElement.baseURI;
     var pageContents = document.getElementsByClassName("contents");
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
+         
             pageContents[0].innerHTML = "Post deleted";
             
         }

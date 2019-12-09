@@ -22,7 +22,7 @@ else{
     echo "<div id='delete-post' class='$image->id'></div>";
 }
 
-echo "<img src='/$image->location' />";
+echo "<img src='/$image->location' id='image-page-image' />";
 echo "<span>Likes: <span id='likes-count'>" . count($likes) . "</span></span>";
 
     if(!empty($_SESSION["user_id"])){

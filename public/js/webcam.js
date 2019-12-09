@@ -3,6 +3,9 @@
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const capture = document.getElementById("capture-image");
+const uploadImage = document.getElementById("upload-image");
+const img = document.getElementById("upoaded-image-preview");
+const btnStartCamera = document.getElementById("start-camera-button");
 
 
 const constraints = {
@@ -12,20 +15,12 @@ const constraints = {
   }
 };
 
-
-
-
-
 // Access webcam
 async function init() {
-  console.log("initializing camera");
+
   try {
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
-
-
      handleSuccess(stream)
-
-  
   } catch (e) {
     
   }
@@ -39,7 +34,7 @@ function handleSuccess(stream) {
 }
 
 //Load init
-//init();
+init();
 
 // Draw image
 var context = canvas.getContext('2d');
@@ -88,7 +83,7 @@ function sendImage(){
 
     var dataURL = canvas.toDataURL();
     var stickers = document.getElementsByName("sticker");
-    //console.log(dataURL);
+
     var selectedStickers = '';
     var i = 0;
     while(stickers[i]){
@@ -165,7 +160,7 @@ function setActionListeners(){
 }
 
 function saveImage(action){
-  //console.log("save " + action.srcElement.id);
+
 
   var imageName = action.srcElement.id;
   var image = document.getElementById(imageName);
@@ -175,7 +170,7 @@ function saveImage(action){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            //console.log(this.responseText);
+
             imagePreviewWindow.removeChild(imageContainer);
             
         }
@@ -186,7 +181,6 @@ function saveImage(action){
 }
 
 function deleteImage(action){
-  //console.log("delete " + action.srcElement.id);
 
   var imageName = action.srcElement.id;
   var image = document.getElementById(imageName);
@@ -206,8 +200,7 @@ function deleteImage(action){
 }
 
 
-var uploadImage = document.getElementById("upload-image");
-var img = document.getElementById("upoaded-image-preview");
+
 
 uploadImage.addEventListener("change", uploadUploadedImage);
 uploadImage.style.display = "none";
@@ -223,7 +216,6 @@ function uploadUploadedImage(x){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
             displayUploadedImage(this.responseText);
         }
     };
@@ -238,8 +230,8 @@ function displayUploadedImage(image){
  img.src = imgsrc;
 }
 
-var startCamera = document.getElementById("start-camera-button");
-startCamera.addEventListener("click", function (){
+
+btnStartCamera.addEventListener("click", function (){
   img.src = "";
   init();
 
@@ -251,13 +243,32 @@ document.getElementById("choose-image").addEventListener("click", function (){
   video.height = 0;
   img.style.maxHeight = "100%";
   uploadImage.click();
-  console.log("world");
 
 });
 
+var uploadedImagePreview = document.getElementById("upoaded-image-preview");
+var sendUploadedImage = document.getElementById("send-image");
 
+sendUploadedImage.addEventListener("click", function (){
+  var dataURL = uploadedImagePreview.src;
+  var stickers = document.getElementsByName("sticker");
 
-
-
-
-
+  var selectedStickers = '';
+  var i = 0;
+  while(stickers[i]){
+    if (stickers[i].checked){
+      selectedStickers = selectedStickers + "," + i;
+    }
+    i++;
+  }
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+          addImageToPage(this.responseText);
+          setActionListeners();
+      }
+  };
+  xhttp.open("POST", "/images/upload", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("image=" + dataURL + "&stickers=" + selectedStickers);
+});
