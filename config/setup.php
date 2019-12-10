@@ -1,17 +1,20 @@
 <?php
-require_once('./database.php');
+if (file_exists('./database.php'))
+	require_once('./database.php');
+else 
+	require_once('./config/database.php');
 try
 {
 	$conn = new PDO('mysql:host='.$DB_HOST, $DB_USER, $DB_PASSWORD);
 	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	echo "Connected<br>";
+	//echo "Connected<br>";
 	$sql = "CREATE DATABASE IF NOT EXISTS `$DB_NAME`";
 	$conn->exec($sql);
-	echo "Database created<br>";
+	//echo "Database created<br>";
 }
 catch (PDOException $e) 
 {
-	echo $e->getMessage();
+	//echo $e->getMessage();
 }
 
 $conn = NULL;
@@ -41,7 +44,7 @@ try
 							, `comments` TEXT NOT NULL 
 							, PRIMARY KEY (`id`)) ENGINE = InnoDB");
 	$stmt->execute();
-	echo "Tables Created.<br>";
+	//echo "Tables Created.<br>";
 }
 catch (PDOException $e) 
 {

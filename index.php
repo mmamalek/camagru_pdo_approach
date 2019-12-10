@@ -7,9 +7,16 @@ define(CONTROLLER, APP.'controller/');
 define(MODEL, APP.'model/');
 define(VIEW, APP.'view/');
 define(LIB, APP.'lib/');
-?>
-<?php
+
+include_once("config/setup.php");
 session_start();
+
+if(!file_exists("uploads")){
+    mkdir("uploads");
+}
+if(!file_exists("temp_uploads")){
+    mkdir("temp_uploads");
+}
 
 if (!isset($_SESSION['user_id'])){
     $_SESSION['user_id'] = NULL;
