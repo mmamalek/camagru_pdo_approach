@@ -11,14 +11,16 @@ class View{
     public function render(){
 
 
-        include(VIEW . 'header.php');
+        include(__DIR__."/".'app/view/header.php');
 
-        if (file_exists(VIEW . $this->viewName . '.php')){
-            include(VIEW . $this->viewName . '.php');
+        if (file_exists(__DIR__."/".'app/view/' . $this->viewName . '.php')){
+            include(__DIR__."/".'app/view/' . $this->viewName . '.php');
         } else {
-            echo 'error:: viewfile not found';
+            include(__DIR__."/".'app/view/header.php');
+            include(__DIR__."/".'app/view/error/pagenotfound.php');
+            include(__DIR__."/".'app/view/footer.php');
         }
-        include(VIEW . 'footer.php');
+        include(__DIR__."/".'app/view/' . 'footer.php');
 
     }
 }

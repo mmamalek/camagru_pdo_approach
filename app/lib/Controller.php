@@ -5,7 +5,7 @@ class Controller{
 
     protected function view($viewName, $viewData = []){
 
-        include(LIB.'View.php');
+        include(__DIR__."/".'app/lib/View.php');
         $this->view = new View($viewName, $viewData);
 
         return $this->view;

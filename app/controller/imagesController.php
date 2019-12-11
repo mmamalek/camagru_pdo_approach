@@ -1,7 +1,7 @@
 <?php
-include(LIB.'Controller.php');
-include(MODEL.'imagesModel.php');
-include(MODEL.'userModel.php');
+include(__DIR__."/".'app/lib/Controller.php');
+include(__DIR__."/".'app/model/imagesModel.php');
+include(__DIR__."/".'app/model/userModel.php');
 
 class imagesController extends Controller{
 

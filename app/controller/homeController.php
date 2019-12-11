@@ -1,6 +1,6 @@
 <?php
-include(LIB.'Controller.php');
-include(MODEL.'imagesModel.php');
+include(__DIR__."/".'app/lib/Controller.php');
+include(__DIR__."/".'app/model/imagesModel.php');
 
 class homeController extends Controller{
     public function __construct(){

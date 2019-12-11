@@ -11,7 +11,7 @@ class userModel
 	}
 
 	protected function connect(){
-		require(CONFIG . 'database.php');
+		require(__DIR__."/" .'config/database.php');
 
 		try {
 			$this->dbconnection = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);

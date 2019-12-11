@@ -1,12 +1,13 @@
 <?php
 define(ROOT, __DIR__.'/');
-define(CONFIG, ROOT.'config/');
-define(DOC, ROOT.'public/');
-define(APP, ROOT.'app/');
-define(CONTROLLER, APP.'controller/');
-define(MODEL, APP.'model/');
-define(VIEW, APP.'view/');
-define(LIB, APP.'lib/');
+__DIR__."/"."app/"
+
+
+__DIR__."/".'app/model/'
+
+
+
+
 
 include_once("config/setup.php");
 session_start();
@@ -21,6 +22,6 @@ if(!file_exists("temp_uploads")){
 if (!isset($_SESSION['user_id'])){
     $_SESSION['user_id'] = NULL;
 }
-include(APP.'Application.php');
+include(__DIR__."/".'app/Application.php');
 $app = new Application();
 ?>

@@ -1,6 +1,6 @@
 <?php
-include(LIB.'Controller.php');
-include(MODEL.'userModel.php');
+include(__DIR__."/".'app/lib/Controller.php');
+include(__DIR__."/".'app/model/userModel.php');
 
 class userController extends Controller{
 

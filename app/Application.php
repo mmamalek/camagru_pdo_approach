@@ -55,16 +55,16 @@ class Application{
     protected function createController(){
   
 
-        if (file_exists(CONTROLLER.$this->controller.'.php')){
-            include(CONTROLLER.$this->controller.'.php');
+        if (file_exists(__DIR__."/".'app/controller/'.$this->controller.'.php')){
+            include(__DIR__."/".'app/controller/'.$this->controller.'.php');
             $controller = new $this->controller();
             $this->controller = $controller;
 
         } else {
           
-            include(VIEW."header.php");
-            include(VIEW."error/pagenotfound.php");
-            include(VIEW."footer.php");
+            include(__DIR__."/".'app/view/header.php');
+            include(__DIR__."/".'app/view/error/pagenotfound.php');
+            include(__DIR__."/".'app/view/footer.php');
         }
     }
 
@@ -75,9 +75,9 @@ class Application{
             call_user_func_array([$this->controller,$this->action], $this->args);
         } else {
      
-            include(VIEW."header.php");
-            include(VIEW."error/pagenotfound.php");
-            include(VIEW."footer.php");
+            include(__DIR__."/".'app/view/header.php');
+            include(__DIR__."/".'app/view/error/pagenotfound.php');
+            include(__DIR__."/".'app/view/footer.php');
         }
     }
 
