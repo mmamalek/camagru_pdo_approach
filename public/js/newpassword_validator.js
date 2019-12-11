@@ -21,7 +21,7 @@ function validatePassword() {
 	if (empty(password)){
 		return false;
 	}
-	if (!meetLength(password, 4, 100)){
+	if (!meetLength(password, 8, 100)){
 		return false;
 	}
 	// check password against our character set

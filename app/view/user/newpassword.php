@@ -1,8 +1,8 @@
 <div class="form">
     <h1>New Password</h1>
 
-    <form action="/user/setnewpassword" method="POST">
-    <div class="form-input" id="form">
+    <form action="/user/setnewpassword" method="POST" id="form">
+    <div class="form-input" >
         <label for="password">New Password</label>
         <input type="password" placeholder="password" name="passwd" id="password" autocomplete="new-password" required />
         <div class="error"></div>
