@@ -57,7 +57,7 @@ reinitialisation mail, if he forget his password.
 
 ## AUTHOR
 
-<!-- ![Mosima Mamaleke](api/uploads/default.png){:height="50%" width="50%"} ![Sibonelo Nkosi](api/uploads/default.png){:height="50%" width="50%"} -->
+
 
 [Mosima Mamaleka](www.gihub.com/mmamalek)
 
